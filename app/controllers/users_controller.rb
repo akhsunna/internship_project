@@ -4,6 +4,22 @@ class UsersController < ApplicationController
     redirect_to user_path(current_user)
   end
 
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+  def index
+    @users = User.all
+  end
+
+
+
+
+
+
+
+
   def finish_signup
     # authorize! :update, @user
     if request.patch? && params[:user] #&& params[:user][:email]

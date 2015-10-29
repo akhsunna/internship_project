@@ -1,7 +1,8 @@
 .col-md-2.col-md-offset-5
   - if user_signed_in?
-    Hello,
-    = current_user.name
+    - if @user == current_user
+      Hello,
+    = @user.name
   - else
     = link_to 'Sign in', new_user_session_path
     or
