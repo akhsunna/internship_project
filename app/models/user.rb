@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   has_many :identities, dependent: :destroy
+  has_many :books
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
@@ -12,9 +13,9 @@ class User < ActiveRecord::Base
   ROLE_MODERATOR = 'moderator'
   ROLE_USER = 'user'
 
-  def admin?
-    role == ROLE_ADMIN
-  end
+  # def admin?
+  #   role == ROLE_ADMIN
+  # end
 
   def moderator?
     role == ROLE_MODERATOR
@@ -24,9 +25,8 @@ class User < ActiveRecord::Base
     role == ROLE_USER
   end
 
-  scope :teachers, ->{ where role: ROLE_TEACHER }
-  scope :students, ->{ where role: ROLE_STUDENT }
-  scope :users, ->{ where role: [ROLE_STUDENT, ROLE_TEACHER] }
+  scope :moderators, ->{ where role: ROLE_MODERATOR }
+  scope :users, ->{ where role: ROLE_USER }
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
     identity = Identity.where(provider: auth.provider, uid: auth.uid).first

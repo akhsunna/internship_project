@@ -1,7 +1,12 @@
 class UsersController < ApplicationController
 
   def current_user_home
-    redirect_to user_path(current_user)
+    if current_user.moderator?
+      redirect_to moderator_path(current_user)
+    else
+      redirect_to user_path(current_user)
+    end
+
   end
 
 
@@ -10,7 +15,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.all
+    @users = User.users
   end
 
 
