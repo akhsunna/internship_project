@@ -6,17 +6,17 @@
 
       %h3{ :class => 'form-signin-heading' }Please sign up
 
-      .field= f.text_field :name, autofocus: true, placeholder: :name
+      = f.text_field :name, autofocus: true, placeholder: :name, class: 'form-control'
 
-      .field= f.email_field :email, placeholder: :email
+      = f.email_field :email, placeholder: :email, class: 'form-control'
 
-      .field= f.text_field :phone, placeholder: :phone
+      = f.text_field :phone, placeholder: :phone, class: 'form-control'
 
-      .field= f.password_field :password, autocomplete: 'off', placeholder: :password
+      = f.password_field :password, autocomplete: 'off', placeholder: :password, class: 'form-control'
 
-      .field= f.password_field :password_confirmation, autocomplete: 'off', placeholder: :password_confirmation
+      = f.password_field :password_confirmation, autocomplete: 'off', placeholder: :password_confirmation, class: 'form-control'
 
       %p
       .actions= f.submit 'Sign up'
 
-    = render 'devise/shared/links'
+    = link_to 'Sign in', new_session_path(resource_name)
