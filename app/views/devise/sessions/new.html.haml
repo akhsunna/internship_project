@@ -1,0 +1,15 @@
+.container.signin
+  .col-md-2.col-md-offset-5
+
+    = form_for resource, as: resource_name, url: session_path(resource_name) do |f|
+
+      %h3 Please sign in
+      = f.email_field :email, autofocus: true, placehplder: :email, class: 'form-control'
+
+      = f.password_field :password, autocomplete: 'off', placehplder: :password, class: 'form-control'
+
+      %p
+
+      .action= f.submit 'Sign in'
+
+    = render 'devise/shared/links'
