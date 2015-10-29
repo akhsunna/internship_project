@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+%html>
+%head>
+  %title>MyLibrary</title>
+  = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+  = javascript_include_tag 'application', 'data-turbolinks-track' => true
+  = csrf_meta_tags
+%body>
+  - if user_signed_in?
+    %nav.navbar.navbar-default
+      .container
+        .navbar-header
+          -#%button.navbar-toggle.collapsed{'data-target' => '.navbar-collapse', 'data-toggle' => 'collapse', type: 'button'}
+          -#  %span.sr-only Toggle navigation
+          -#  %span.icon-bar
+          -#  %span.icon-bar
+          -#  %span.icon-bar
+          -#%img{ src: '/assets/filename.png', style: 'height:50px' }
+        .navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            - if current_user.user?
+              %li= link_to 'All books'
+              %li= link_to 'My books'
+              %li= link_to 'Profile'
+          %ul.nav.navbar-nav.navbar-right
+            %li.dropdown
+              %a.dropdown-toggle{'aria-expanded' => 'false', 'data-toggle' => 'dropdown', href: '', role: 'button'}
+                = current_user.name
+                %span.caret
+              %ul.dropdown-menu{role: 'menu'}
+                %li
+                  - if current_user.user?
+                    %a=link_to 'Settings', edit_user_registration_path
+                  - else
+                    %a=link_to 'Change password', edit_user_registration_path
+                -#%li
+                -#  - if current_user.user?
+                -#    %a=link_to 'Write to admin'
+                %li.divider
+                %li= link_to 'Sign out', destroy_user_session_path, method: :delete
+  = yield

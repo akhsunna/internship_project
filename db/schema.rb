@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029074817) do
+ActiveRecord::Schema.define(version: 20151029083517) do
 
   create_table "identities", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20151029074817) do
     t.string   "unconfirmed_email",      limit: 255
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+    t.string   "role",                   limit: 255
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
