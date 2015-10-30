@@ -2,6 +2,8 @@ class BooksController < ApplicationController
 
   def index
     @books = Book.all
+    @authors = Author.all
+    @languages = Language.all
   end
 
   def show
@@ -14,6 +16,11 @@ class BooksController < ApplicationController
 
   def create
     @book = Book.new(book_params)
+
+    if !@book.is_valid_year?(@book.year)
+      render action: 'new'
+    end
+
     if @book.save
       redirect_to books_path, notice: 'The book has been successfully created.'
     else

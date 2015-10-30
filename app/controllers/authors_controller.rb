@@ -4,6 +4,11 @@ class AuthorsController < ApplicationController
     @authors = Author.all
   end
 
+  def show
+    @author = Author.find(params[:id])
+    @books = Book.where(author_id: @author.id)
+  end
+
   def new
     @author = Author.new
   end
