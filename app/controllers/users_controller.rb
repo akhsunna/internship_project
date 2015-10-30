@@ -1,16 +1,9 @@
 class UsersController < ApplicationController
 
-  def current_user_home
+  def show
     if current_user.moderator?
       redirect_to moderator_path(current_user)
-    else
-      redirect_to user_path(current_user)
     end
-
-  end
-
-
-  def show
     @user = User.find(params[:id])
   end
 
