@@ -7,7 +7,7 @@ class Book < ActiveRecord::Base
 
   belongs_to :language
 
-  validates_exclusion_of :year, in: 1800..Date.today.year
+  validates :year, inclusion: 1800..Date.today.year
 
   has_attached_file :cover, url: '/books/:id/:style/:filename',
                     path: ':rails_root/public/books/:id/:style/:filename',
