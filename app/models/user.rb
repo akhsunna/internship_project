@@ -44,7 +44,8 @@ class User < ActiveRecord::Base
         user = User.new(
             name: auth.extra.raw_info[:name],
             email: auth.extra.raw_info[:email] ,
-            password: Devise.friendly_token[0,20]
+            password: Devise.friendly_token[0,20],
+            role: 'user'
         )
         user.save!
       end

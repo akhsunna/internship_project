@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(version: 20151030093528) do
 
   create_table "books", force: :cascade do |t|
     t.integer  "user_id",            limit: 4
-    t.string   "title",              limit: 255
-    t.string   "year",               limit: 255
+    t.string   "title",              limit: 255, null: false
+    t.integer  "year",               limit: 4
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.integer  "author_id",          limit: 4
