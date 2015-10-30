@@ -10,6 +10,9 @@
       = f.email_field :email, placeholder: :email, class: 'form-control'
       = f.text_field :phone, placeholder: :phone, class: 'form-control'
 
+      %br
+      = f.file_field :avatar
+
       %h3 Password settings
       - if devise_mapping.confirmable? && resource.pending_reconfirmation?
         %div= "Currently waiting confirmation for: #{resource.unconfirmed_email}"

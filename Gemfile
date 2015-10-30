@@ -38,6 +38,9 @@ gem 'font-awesome-rails'
 # Haml
 gem 'haml'
 
+# For pictures
+gem 'paperclip', '~> 4.3'
+
 # For admin
 gem 'rails_admin'
 

@@ -7,4 +7,12 @@ class Book < ActiveRecord::Base
 
   belongs_to :language
 
+
+  has_attached_file :cover, url: '/books/:id/:style/:filename',
+                    path: ':rails_root/public/books/:id/:style/:filename',
+                    styles: { small: 'x100', large: '500x500>' },
+                    default_url: '/books/default/:style/default.png'
+  validates_attachment :cover,
+                       content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
+
 end

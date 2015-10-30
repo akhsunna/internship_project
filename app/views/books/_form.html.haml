@@ -13,6 +13,9 @@
               = f.label 'Year'
               = f.text_field :year, class: 'form-control'
 
+            %br
+            = f.file_field :cover
+
             = f.hidden_field :user_id, value: current_user.id
             %br
             .form-group
