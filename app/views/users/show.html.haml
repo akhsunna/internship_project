@@ -3,6 +3,7 @@
     - if @user == current_user
       Hello,
     = @user.name
+    _books
   - else
     = link_to 'Sign in', new_user_session_path
     or

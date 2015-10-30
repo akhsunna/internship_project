@@ -1,0 +1,26 @@
+%section{ id: 'newbook' }
+  .container
+    .row
+      .col-xs-12
+        .form-wrap
+          %h1 New book
+
+          = form_for @book do |f|
+            .form-group
+              = f.label 'Title'
+              = f.text_field :title, class: 'form-control'
+            .form-group
+              = f.label 'Year'
+              = f.text_field :year, class: 'form-control'
+
+            = f.hidden_field :user_id, value: current_user.id
+            %br
+            .form-group
+              = f.label 'Author'
+              = f.collection_select(:author_id, Author.all, :id, :last_name, {include_blank: true}, {class: 'btn btn-default dropdown-toggle form-control'})
+
+            .form-group
+              = f.label 'Language'
+              = f.collection_select(:language_id, Language.all, :id, :name, {include_blank: true}, {class: 'btn btn-default dropdown-toggle form-control'})
+
+            = f.submit 'Save', class: 'btn btn-custom btn-lg btn-block'

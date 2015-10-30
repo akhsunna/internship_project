@@ -1,3 +1,6 @@
+= @user.name
+%br
+%br
 - @books.each do |book|
   Title:
   = link_to book.title, book_path(book.id)
@@ -5,4 +8,6 @@
   = link_to book.author.first_name + book.author.last_name
   Language:
   = link_to book.language.name
+  ______
+  = link_to 'Edit', edit_book_path(book.id)
   %br
