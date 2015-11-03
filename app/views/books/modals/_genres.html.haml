@@ -1,20 +1,24 @@
 .modal-dialog
   .modal-content
     .modal-header
-      %button.close{'data-dismiss' => 'modals', type: 'button'}
+      %button.close{'data-dismiss' => 'modals', :type => 'button'}
         %span{'aria-hidden' => 'true'} ×
         %span.sr-only Close
       %h4.modal-title Genres
     .modal-body
-      .well{ style: 'max-height:300px;overflow:auto;' }
-        %ul.list-genre.checked-list-box
-          -#- Genre.all.sort_by{|obj| obj.name}.each do |genre|
-          -#  - if @genres.include?(genre)
-          -#    = link_to method: :put, remote: true, data: { id: genre.id } do
-          -#      %li.list-genre-item{'data-checked' => 'true'}= genre.name
-          -#  -else
-          -#    = link_to method: :put, remote: true, data: { id: genre.id } do
-          -#    %li.list-genre-item= genre.name
+      .well{ style: 'max-height: 300px;overflow: auto;' }
+        %ul.list-group.checked-list-box
           - Genre.all.each do |genre|
-            %li.list-genre-item{'data-checked' => 'true'}= genre.name
+            - if @genres.include?(genre)
+              = link_to do
+                %li.list-group-item{'data-checked' => 'true'}= genre.name
+            -else
+              = link_to do
+                %li.list-group-item= genre.name
+
+      -#.well{:style => "max-height: 300px;overflow: auto;"}
+      -#  %ul.list-group.checked-list-box
+      -#    %li.list-group-item Leerla hasta entenderla
+      -#    %li.list-group-item{"data-checked" => "true"} Leer la ubicación del usuario
+      -#    %li.list-group-item Investigar hasta entender la intención
     .modal-footer

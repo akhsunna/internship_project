@@ -14,14 +14,16 @@
 
 
 
-  .col-xs-6.col-sm-3.sidebar-offcanvas
-    .row
-      %h3 Authors
-      %br
-      - @authors.each do |author|
-        %p= link_to author.first_name + ' ' + author.last_name, author_path(author.id)
-    .row
-      %h3 Languages:
-      %br
-      - @languages.each do |l|
-        %p= link_to l.name, language_path(l.id)
+  -#.col-xs-6.col-sm-3.sidebar-offcanvas
+  -#  .row
+  -#    %h3 Authors
+  -#    %br
+  -#    - @authors.each do |author|
+  -#      %p= link_to author.first_name + ' ' + author.last_name, author_path(author.id)
+  -#  .row
+  -#    %h3 Languages:
+  -#    %br
+  -#    - @languages.each do |l|
+  -#      %p= link_to l.name, language_path(l.id)
+
+

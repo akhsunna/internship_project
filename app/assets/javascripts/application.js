@@ -13,22 +13,23 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require jquery.remotipart
 //= require_tree .
 
-
 $(function () {
-    $('.list-genre.checked-list-box .list-genre-item').each(function () {
+    $('.list-group.checked-list-box .list-group-item').each(function () {
 
+        // Settings
         var $widget = $(this),
             $checkbox = $('<input type="checkbox" class="hidden" />'),
             color = ($widget.data('color') ? $widget.data('color') : "primary"),
-            style = ($widget.data('style') == "button" ? "btn-" : "list-genre-item-"),
+            style = ($widget.data('style') == "button" ? "btn-" : "list-group-item-"),
             settings = {
                 on: {
-                    icon: 'fa fa-check-square-o'
+                    icon: 'glyphicon glyphicon-check'
                 },
                 off: {
-                    icon: 'fa fa-square-o'
+                    icon: 'glyphicon glyphicon-unchecked'
                 }
             };
 
@@ -45,6 +46,8 @@ $(function () {
             updateDisplay();
         });
 
+
+        // Actions
         function updateDisplay() {
             var isChecked = $checkbox.is(':checked');
 
@@ -90,7 +93,4 @@ $(function () {
         });
         $('#display-json').html(JSON.stringify(checkedItems, null, '\t'));
     });
-
-
-
 });
