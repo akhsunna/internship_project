@@ -1,0 +1,12 @@
+.container
+  .jumbotron
+    %center
+      %h2= 'Books in ' + @language.name
+
+  .row
+    - @books.each do |book|
+      .col-xs-4.col-lg-3
+        %center
+          = image_tag book.cover.url(:square), class: 'img-circle'
+          %h2= book.title
+          %p= book.language.name

@@ -24,4 +24,4 @@
       %h3 Languages:
       %br
       - @languages.each do |l|
-        %p= link_to l.name
+        %p= link_to l.name, language_path(l.id)
