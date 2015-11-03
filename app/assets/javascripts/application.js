@@ -16,6 +16,15 @@
 //= require jquery.remotipart
 //= require_tree .
 
+$(document).ready(function() {
+    $('[id^=detail-]').hide();
+    $('.toggle').click(function() {
+        $input = $( this );
+        $target = $('#'+$input.attr('data-toggle'));
+        $target.slideToggle();
+    });
+});
+
 $(function () {
     $('.list-group.checked-list-box .list-group-item').each(function () {
 

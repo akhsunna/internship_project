@@ -10,6 +10,7 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @copies = @book.book_copies
   end
 
   def new
@@ -50,6 +51,11 @@ class BooksController < ApplicationController
   def genres
     @book = Book.find(params[:book_id])
     @genres = Genre.all
+  end
+
+  def copies
+    @book = Book.find(params[:book_id])
+    @copies = BookCopy.where(book_id: @book.id)
   end
 
   private
