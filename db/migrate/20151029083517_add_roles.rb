@@ -4,6 +4,6 @@ class AddRoles < ActiveRecord::Migration
   end
 
   def down
-    remove_column :users, role
+    remove_column :users, :role
   end
 end

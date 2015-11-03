@@ -1,1 +1,56 @@
-= image_tag @book.cover.url(:large)
+%br
+.container
+  .row
+    .col-md-4
+      %center= image_tag @book.cover.url(:large)
+    .col-md-6
+      %h1.text-primary= @book.title
+      %h2= 'by '+ @book.author.first_name + ' ' + @book.author.last_name
+      %br
+      Year:
+      = @book.year
+      %br
+      Language:
+      = @book.language.name
+      %br
+      Number of available copies:
+      = '1'
+
+      %br
+      %br
+
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Copies
+        %ul.list-group
+          - @copies.each do |copy|
+            %li.list-group-item
+            %div{ id: "dropdown-detail-#{copy.id}", class: 'row toggle', 'data-toggle' => "detail-#{copy.id}" }
+              .col-xs-10
+                = copy.isbn
+              .col-xs-2
+                %i.fa.fa-chevron-down.pull-right
+            %div{id: "detail-#{copy.id}"}
+              %hr
+              .container
+                .fluid-row
+                  Status now:
+                  - if !copy.available
+                    not
+                  available
+                  %br
+                  History
+                  %br
+                  - copy.book_copy_users.each do |cu|
+                    User:
+                    = cu.user.name
+                    Return date:
+                    = cu.return_date || 'not returned'
+                    %br
+
+
+
+
+    .col-md-3
+
+  .row

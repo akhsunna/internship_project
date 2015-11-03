@@ -1,0 +1,21 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      %h4.modal-title= 'Copies of the ' + @book.title
+    .modal-body
+      %ul
+        - @copies.all.each do |copy|
+          %li
+            = copy.isbn
+            - if copy.user==current_user
+              you
+            - else
+              = copy.user.name
+            - if !copy.available
+              not available
+              = BookCopyUser.where(book_copy_id: copy.id).last.user.name
+            - else
+              available
+            = link_to 'History'
+    .modal-footer
+      = link_to 'Cancel', '', class: 'btn', data: {dismiss: 'modals'}

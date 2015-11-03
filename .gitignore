@@ -19,4 +19,5 @@
 config/database.yml
 
 public/books/
+!/public/books/default/
 

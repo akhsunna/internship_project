@@ -1,5 +1,7 @@
 class BooksController < ApplicationController
 
+  respond_to :html, :js
+
   def index
     @books = Book.all
     @authors = Author.all
@@ -8,6 +10,7 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @copies = @book.book_copies
   end
 
   def new
@@ -28,11 +31,31 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])
   end
 
+  def delete
+    @book = Book.find(params[:book_id])
+  end
+
+  def destroy
+    @books = Book.all
+    @book = Book.find(params[:id])
+    @book.destroy
+  end
+
   def update
     @books = Book.all
     @book = Book.find(params[:id])
     @book.update_attributes(book_params)
-    redirect_to user_path(current_user.id)
+    # redirect_to user_path(current_user.id)
+  end
+
+  def genres
+    @book = Book.find(params[:book_id])
+    @genres = Genre.all
+  end
+
+  def copies
+    @book = Book.find(params[:book_id])
+    @copies = BookCopy.where(book_id: @book.id)
   end
 
   private

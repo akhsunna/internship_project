@@ -3,6 +3,9 @@ class User < ActiveRecord::Base
   has_many :identities, dependent: :destroy
   has_many :books
 
+  has_many :book_copies
+  has_many :book_copy_users
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable

@@ -1,13 +1,45 @@
-= @user.name
-%br
-%br
-- @books.each do |book|
-  Title:
-  = link_to book.title, book_path(book.id)
-  Author:
-  = link_to book.author.first_name + book.author.last_name
-  Language:
-  = link_to book.language.name
-  ______
-  = link_to 'Edit', edit_book_path(book.id)
-  %br
+.container
+  .row
+    .col-md-12
+
+      = @user.name
+      %br
+      %br
+      %table{ class: 'table table-striped table-bordred' }
+        %thead
+          %tr
+            %th Title
+            %th Author
+            %th Cover
+            %th Language
+            %th Number of instances
+            %th Genres
+            %th Edit
+            %th Delete
+        %tbody
+          - @books.each do |book|
+            %tr
+              %td= link_to book.title, book_path(book.id)
+              %td= link_to book.author.first_name + book.author.last_name, author_path(book.author.id)
+              %td
+                .img-rounded= image_tag book.cover.url(:small)
+              %td= book.language.name
+              %td= link_to '1', book_copies_path(book.id), remote: true
+              %td
+                = link_to book_genres_path(book.id), remote: true do
+                  .btn.btn-subj.btn-info
+                    %i.fa.fa-eye
+              %td
+                = link_to edit_book_path(book.id), remote: true do
+                  .btn.btn-sm.btn-warning
+                    %i.fa.fa-edit
+              %td
+                .btn.btn-sm.btn-danger
+                  %i.fa.fa-trash
+
+.container
+  .well{:style => "max-height: 300px;overflow: auto;"}
+    %ul.list-group.checked-list-box
+      %li.list-group-item Leerla hasta entenderla
+      %li.list-group-item{"data-checked" => "true"} Leer la ubicación del usuario
+      %li.list-group-item Investigar hasta entender la intención
