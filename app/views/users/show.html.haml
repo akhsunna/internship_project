@@ -4,6 +4,7 @@
       Hello,
     = @user.name
     _books
+    .img-rounded= image_tag @user.avatar.url(:medium)
   - else
     = link_to 'Sign in', new_user_session_path
     or

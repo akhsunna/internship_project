@@ -9,6 +9,12 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
 
+
+  has_attached_file :avatar, styles: { medium: '300x300>', thumb: '100x100>', default_url: '/default/missing.png' }
+  validates_attachment :avatar,
+                       content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] },
+                       size: { in: 0..1000.kilobytes }
+
   ROLE_ADMIN = 'admin'
   ROLE_MODERATOR = 'moderator'
   ROLE_USER = 'user'
@@ -38,7 +44,8 @@ class User < ActiveRecord::Base
         user = User.new(
             name: auth.extra.raw_info[:name],
             email: auth.extra.raw_info[:email] ,
-            password: Devise.friendly_token[0,20]
+            password: Devise.friendly_token[0,20],
+            role: 'user'
         )
         user.save!
       end

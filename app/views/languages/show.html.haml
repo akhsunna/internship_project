@@ -1,7 +1,7 @@
 .container
   .jumbotron
     %center
-      %h2= @author.first_name + ' ' + @author.last_name
+      %h2= 'Books in ' + @language.name
 
   .row
     - @books.each do |book|

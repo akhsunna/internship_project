@@ -1,8 +1,27 @@
-- @books.each do |book|
-  Title:
-  = link_to book.title, book_path(book.id)
-  Author:
-  = link_to book.author.first_name + book.author.last_name
-  Language:
-  = link_to book.language.name
-  %br
+.container
+  .col-xs-12.col-sm-9
+    .jumbotron
+      %h1 MyLibrary
+      -#%p This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.
+
+    .row
+      - @books.each do |book|
+        .col-xs-6.col-lg-4
+          %center
+            %h2= book.title
+            %h4= link_to book.author.first_name + book.author.last_name
+            = image_tag book.cover.url(:square), class: 'img-circle'
+
+
+
+  .col-xs-6.col-sm-3.sidebar-offcanvas
+    .row
+      %h3 Authors
+      %br
+      - @authors.each do |author|
+        %p= link_to author.first_name + ' ' + author.last_name, author_path(author.id)
+    .row
+      %h3 Languages:
+      %br
+      - @languages.each do |l|
+        %p= link_to l.name, language_path(l.id)
