@@ -17,3 +17,6 @@
 
 .idea/
 config/database.yml
+
+public/books/
+
