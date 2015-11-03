@@ -11,11 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151103104945) do
+ActiveRecord::Schema.define(version: 20151103132419) do
 
   create_table "authors", force: :cascade do |t|
     t.string "first_name", limit: 255
     t.string "last_name",  limit: 255
+  end
+
+  create_table "book_copies", force: :cascade do |t|
+    t.string   "isbn",       limit: 255
+    t.integer  "book_id",    limit: 4,   null: false
+    t.boolean  "status",     limit: 1
+    t.date     "date"
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "book_copy_users", force: :cascade do |t|
+    t.integer  "book_copy_id", limit: 4, null: false
+    t.integer  "user_id",      limit: 4, null: false
+    t.date     "last_date"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "book_ganres", force: :cascade do |t|
