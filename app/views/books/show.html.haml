@@ -1,1 +1,19 @@
-= image_tag @book.cover.url(:large)
+%br
+.container
+  .row
+    .col-md-4
+      %center= image_tag @book.cover.url(:large)
+    .col-md-6
+      %h1.text-primary= @book.title
+      %h2= 'by '+ @book.author.first_name + ' ' + @book.author.last_name
+      %br
+      Year:
+      = @book.year
+      %br
+      Language:
+      = @book.language.name
+      %br
+      Number of available copies:
+      = '1'
+
+    .col-md-3

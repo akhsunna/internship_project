@@ -13,6 +13,7 @@
             %th Cover
             %th Language
             %th Number of instances
+            %th Genres
             %th Edit
             %th Delete
         %tbody
@@ -23,7 +24,11 @@
               %td
                 .img-rounded= image_tag book.cover.url(:small)
               %td= book.language.name
-              %td= 1
+              %td= link_to '1'
+              %td
+                = link_to book_genres_path(book.id), remote: true do
+                  .btn.btn-subj.btn-info
+                    %i.fa.fa-eye
               %td
                 = link_to edit_book_path(book.id), remote: true do
                   .btn.btn-sm.btn-warning

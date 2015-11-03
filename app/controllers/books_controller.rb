@@ -47,6 +47,11 @@ class BooksController < ApplicationController
     # redirect_to user_path(current_user.id)
   end
 
+  def genres
+    @book = Book.find(params[:book_id])
+    @genres = Genre.all
+  end
+
   private
 
   def book_params

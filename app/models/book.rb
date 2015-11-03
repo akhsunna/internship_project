@@ -2,8 +2,8 @@ class Book < ActiveRecord::Base
   belongs_to :user
   belongs_to :author
 
-  # has_many :ganre_books, dependent: :delete_all
-  # has_many :ganres, through: :ganre_books
+  has_many :book_genres, dependent: :delete_all
+  has_many :genres, through: :book_genres
 
   belongs_to :language
 

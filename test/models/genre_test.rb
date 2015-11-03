@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GanreTest < ActiveSupport::TestCase
+class GenreTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
