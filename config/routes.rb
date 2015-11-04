@@ -7,9 +7,12 @@ Rails.application.routes.draw do
 
   resources :books do
     get 'delete'
+
     get 'genres'
     get 'copies'
     put 'create_copy'
+    put 'add_genre'
+    put 'remove_genre'
   end
 
   # match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], as: :finish_signup

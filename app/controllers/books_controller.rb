@@ -49,14 +49,14 @@ class BooksController < ApplicationController
 
   def genres
     @book = Book.find(params[:book_id])
-    @genres = Genre.all
+    @genres = @book.genres
   end
+
 
   def copies
     @book = Book.find(params[:book_id])
     @copies = BookCopy.where(book_id: @book.id)
   end
-
 
   def create_copy
     @copy = BookCopy.new()
@@ -77,6 +77,21 @@ class BooksController < ApplicationController
     # if BookCopy.all.exists?(isbn: @isbn)
     #   generate_isbn
     # end
+  end
+
+
+  def add_genre
+    @book = Book.find(params[:book_id])
+    @genre = Genre.find(params[:genre_id])
+
+    @new_group_subject = @book.book_genres.create(genre_id: @genre.id)
+  end
+
+  def remove_genre
+    @book = Book.find(params[:book_id])
+    @genre = Genre.find(params[:genre_id])
+
+    BookGenre.where(genre_id: @genre.id, book_id: @book.id).first.destroy
   end
 
 
