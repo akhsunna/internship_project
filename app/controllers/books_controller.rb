@@ -93,18 +93,19 @@ class BooksController < ApplicationController
 
 
 
-  def add_genre
+  def add_remove_genre
     @book = Book.find(params[:book_id])
     @genre = Genre.find(params[:genre_id])
 
-    @new_book_genre = @book.book_genres.create(genre_id: @genre.id)
-  end
+    @book_genre = BookGenre.where(genre_id: @genre.id, book_id: @book.id).first
 
-  def remove_genre
-    @book = Book.find(params[:book_id])
-    @genre = Genre.find(params[:genre_id])
+    if @book_genre
+      @book_genre.destroy
+    else
+      @new_book_genre = @book.book_genres.create(genre_id: @genre.id)
+    end
 
-    BookGenre.where(genre_id: @genre.id, book_id: @book.id).first.destroy
+
   end
 
 
