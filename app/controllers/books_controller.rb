@@ -13,9 +13,8 @@ class BooksController < ApplicationController
     @copies = @book.book_copies
 
     @copies.each do |c|
-      @bcu = current_user.book_copy_users.where(book_copy_id: c.id).last
-      if @bcu
-        if !@bcu.return_date
+      if !c.available
+        if c.book_copy_users.where(user_id: current_user.id, return_date: nil).last
           @user_have_book = true
           @mybook = c.isbn
           return
@@ -114,7 +113,7 @@ class BooksController < ApplicationController
 
   def take
     @book = Book.find(params[:book_id])
-    @book_copy = BookCopy.where(book_id: @book.id).first
+    @book_copy = BookCopy.where(book_id: @book.id, available: true).first
     @user = current_user
 
     @book_copy.available = false
@@ -134,7 +133,7 @@ class BooksController < ApplicationController
     @book_copy.available = true
     @book_copy.save!
 
-    @book_copy_user = BookCopyUser.where(book_copy_id: @book_copy.id, user_id: @user.id).first
+    @book_copy_user = BookCopyUser.where(book_copy_id: @book_copy.id, user_id: @user.id).last
     @book_copy_user.return_date = Time.now
     @book_copy_user.save!
 
