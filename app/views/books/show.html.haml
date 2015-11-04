@@ -49,7 +49,15 @@
                         Return date:
                         = cu.return_date || 'not returned'
                         %br
-
+      - else
+        - if !@user_have_book
+          =link_to '#' do
+            .btn.btn-primary
+              ='Take it'
+        - else
+          =link_to '#' do
+            .btn.btn-danger
+              ='Return it'
 
     .col-md-3
 

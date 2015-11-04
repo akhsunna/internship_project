@@ -11,6 +11,12 @@ class BooksController < ApplicationController
   def show
     @book = Book.find(params[:id])
     @copies = @book.book_copies
+
+    @copies.each do |c|
+      if current_user.book_copy_users.where(book_copy_id: c.id).first
+        @user_have_book = true
+      end
+    end
   end
 
   def new
