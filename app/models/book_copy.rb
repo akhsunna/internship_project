@@ -4,5 +4,5 @@ class BookCopy < ActiveRecord::Base
 
   has_many :book_copy_users
 
-  validates :isbn, presence: true
+  validates_uniqueness_of :isbn
 end

@@ -11,8 +11,10 @@ Rails.application.routes.draw do
     get 'genres'
     get 'copies'
     put 'create_copy'
-    put 'add_genre'
-    put 'remove_genre'
+    put 'add_remove_genre'
+
+    put 'take'
+    put 'return'
   end
 
 

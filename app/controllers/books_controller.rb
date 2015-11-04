@@ -11,6 +11,16 @@ class BooksController < ApplicationController
   def show
     @book = Book.find(params[:id])
     @copies = @book.book_copies
+
+    @copies.each do |c|
+      if !c.available
+        if c.book_copy_users.where(user_id: current_user.id, return_date: nil).last
+          @user_have_book = true
+          @mybook = c.isbn
+          return
+        end
+      end
+    end
   end
 
   def new
@@ -64,8 +74,13 @@ class BooksController < ApplicationController
     @copy.user_id = current_user.id
     @copy.available = true
     @copy.book_id = params[:book_id]
-    @copy.save!
-    redirect_to user_path(current_user)
+
+    if !BookCopy.where(isbn: @copy.isbn).first
+      @copy.save!
+      redirect_to user_path(current_user)
+    else
+      book_create_copy_path(params[:book_id])
+    end
   end
 
   def generate_isbn
@@ -73,25 +88,59 @@ class BooksController < ApplicationController
     @b = rand(10 ** 3).to_s.rjust(3)
     @c = (0...3).map {(65 + rand(26)).chr}.join
     @isbn = [@a,@b,@c].join('-')
-
-    # if BookCopy.all.exists?(isbn: @isbn)
-    #   generate_isbn
-    # end
   end
 
 
-  def add_genre
+
+
+  def add_remove_genre
     @book = Book.find(params[:book_id])
     @genre = Genre.find(params[:genre_id])
 
-    @new_group_subject = @book.book_genres.create(genre_id: @genre.id)
+    @book_genre = BookGenre.where(genre_id: @genre.id, book_id: @book.id).first
+
+    if @book_genre
+      @book_genre.destroy
+    else
+      @new_book_genre = @book.book_genres.create(genre_id: @genre.id)
+    end
+
+
   end
 
-  def remove_genre
-    @book = Book.find(params[:book_id])
-    @genre = Genre.find(params[:genre_id])
 
-    BookGenre.where(genre_id: @genre.id, book_id: @book.id).first.destroy
+
+
+
+  def take
+    @book = Book.find(params[:book_id])
+    @book_copy = BookCopy.where(book_id: @book.id, available: true).first
+    @user = current_user
+
+    @book_copy.available = false
+    @book_copy.save!
+
+    @new_book_copy_user = @user.book_copy_users.create(book_copy_id: @book_copy.id)
+    respond_to do |format|
+      format.js {render inline: 'location.reload();' }
+    end
+  end
+
+  def return
+    @book = Book.find(params[:book_id])
+    @book_copy = BookCopy.where(book_id: @book.id).first
+    @user = current_user
+
+    @book_copy.available = true
+    @book_copy.save!
+
+    @book_copy_user = BookCopyUser.where(book_copy_id: @book_copy.id, user_id: @user.id).last
+    @book_copy_user.return_date = Time.now
+    @book_copy_user.save!
+
+    respond_to do |format|
+      format.js {render inline: 'location.reload();' }
+    end
   end
 
 

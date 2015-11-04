@@ -18,6 +18,8 @@ class UsersController < ApplicationController
 
 
 
+
+
   def finish_signup
     # authorize! :update, @user
     if request.patch? && params[:user] #&& params[:user][:email]
