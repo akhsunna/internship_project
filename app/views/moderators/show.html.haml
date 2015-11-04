@@ -15,7 +15,6 @@
             %th Number of instances
             %th Genres
             %th Edit
-            %th Delete
         %tbody
           - @books.each do |book|
             %tr
@@ -37,6 +36,3 @@
                 = link_to edit_book_path(book.id), remote: true do
                   .btn.btn-sm.btn-warning
                     %i.fa.fa-edit
-              %td
-                .btn.btn-sm.btn-danger
-                  %i.fa.fa-trash

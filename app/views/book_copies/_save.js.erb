@@ -1,0 +1,10 @@
+$("ul.errors").html("")
+<% if @book_copy.errors.any? %>
+<% @book_copy.errors.full_messages.each do |message| %>
+$("ul.errors").append($("<li />").html("<%= message.html_safe %>"))
+<% end %>
+<% else %>
+
+$("#modals").modal("hide");
+location = "<%= book_path(@book.id) %>";
+<% end %>

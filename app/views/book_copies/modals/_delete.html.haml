@@ -1,0 +1,14 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      .modal-title-subj
+        Deleting copy of the book
+        = '"' + @book.title + '"'
+    .modal-body
+      %ul.errors
+        Are you sure, you want to delete
+        %b= @book_copy.isbn
+        ?
+      .modal-footer
+        = link_to 'Yes, delete it', book_copy_path(@book_copy), method: :delete, remote: true, class: 'btn btn-danger'
+        = link_to 'NO', '', class: 'btn', data: { dismiss: 'modals' }
