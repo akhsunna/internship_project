@@ -19,6 +19,9 @@ Rails.application.routes.draw do
 
   resources :book_copies do
     get 'delete'
+
+    put 'take'
+    put 'return'
   end
 
   # match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], as: :finish_signup

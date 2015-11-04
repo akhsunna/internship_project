@@ -70,8 +70,13 @@ class BooksController < ApplicationController
     @copy.user_id = current_user.id
     @copy.available = true
     @copy.book_id = params[:book_id]
-    @copy.save!
-    redirect_to user_path(current_user)
+
+    if !BookCopy.where(isbn: @copy.isbn).first
+      @copy.save!
+      redirect_to user_path(current_user)
+    else
+      book_create_copy_path(params[:book_id])
+    end
   end
 
   def generate_isbn
@@ -79,10 +84,6 @@ class BooksController < ApplicationController
     @b = rand(10 ** 3).to_s.rjust(3)
     @c = (0...3).map {(65 + rand(26)).chr}.join
     @isbn = [@a,@b,@c].join('-')
-
-    # if BookCopy.all.exists?(isbn: @isbn)
-    #   generate_isbn
-    # end
   end
 
 
