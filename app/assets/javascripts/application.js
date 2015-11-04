@@ -25,6 +25,8 @@ $(document).ready(function() {
     });
 });
 
+
+
 $(function () {
     $('.list-group.checked-list-box .list-group-item').each(function () {
 
@@ -35,10 +37,10 @@ $(function () {
             style = ($widget.data('style') == "button" ? "btn-" : "list-group-item-"),
             settings = {
                 on: {
-                    icon: 'glyphicon glyphicon-check'
+                    icon: 'fa fa-check-square-o'
                 },
                 off: {
-                    icon: 'glyphicon glyphicon-unchecked'
+                    icon: 'fa fa-square-o'
                 }
             };
 

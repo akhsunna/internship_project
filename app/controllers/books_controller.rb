@@ -26,7 +26,6 @@ class BooksController < ApplicationController
     end
   end
 
-
   def edit
     @book = Book.find(params[:id])
   end
@@ -50,13 +49,52 @@ class BooksController < ApplicationController
 
   def genres
     @book = Book.find(params[:book_id])
-    @genres = Genre.all
+    @genres = @book.genres
   end
+
 
   def copies
     @book = Book.find(params[:book_id])
     @copies = BookCopy.where(book_id: @book.id)
   end
+
+  def create_copy
+    @copy = BookCopy.new()
+    @copy.isbn = generate_isbn
+    @copy.user_id = current_user.id
+    @copy.available = true
+    @copy.book_id = params[:book_id]
+    @copy.save!
+    redirect_to user_path(current_user)
+  end
+
+  def generate_isbn
+    @a = (0...3).map {(65 + rand(26)).chr}.join
+    @b = rand(10 ** 3).to_s.rjust(3)
+    @c = (0...3).map {(65 + rand(26)).chr}.join
+    @isbn = [@a,@b,@c].join('-')
+
+    # if BookCopy.all.exists?(isbn: @isbn)
+    #   generate_isbn
+    # end
+  end
+
+
+  def add_genre
+    @book = Book.find(params[:book_id])
+    @genre = Genre.find(params[:genre_id])
+
+    @new_group_subject = @book.book_genres.create(genre_id: @genre.id)
+  end
+
+  def remove_genre
+    @book = Book.find(params[:book_id])
+    @genre = Genre.find(params[:genre_id])
+
+    BookGenre.where(genre_id: @genre.id, book_id: @book.id).first.destroy
+  end
+
+
 
   private
 

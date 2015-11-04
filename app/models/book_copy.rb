@@ -3,4 +3,6 @@ class BookCopy < ActiveRecord::Base
   belongs_to :user
 
   has_many :book_copy_users
+
+  validates :isbn, presence: true
 end

@@ -24,10 +24,14 @@
               %td
                 .img-rounded= image_tag book.cover.url(:small)
               %td= book.language.name
-              %td= link_to '1', book_copies_path(book.id), remote: true
+              %td
+                = link_to BookCopy.where(book_id: book.id).count, book_copies_path(book.id), remote: true
+                = link_to book_create_copy_path(book.id), method: :put do
+                  .btn.btn-sm
+                    %i.fa.fa-plus
               %td
                 = link_to book_genres_path(book.id), remote: true do
-                  .btn.btn-subj.btn-info
+                  .btn.btn-sm.btn-info
                     %i.fa.fa-eye
               %td
                 = link_to edit_book_path(book.id), remote: true do
@@ -36,10 +40,3 @@
               %td
                 .btn.btn-sm.btn-danger
                   %i.fa.fa-trash
-
-.container
-  .well{:style => "max-height: 300px;overflow: auto;"}
-    %ul.list-group.checked-list-box
-      %li.list-group-item Leerla hasta entenderla
-      %li.list-group-item{"data-checked" => "true"} Leer la ubicación del usuario
-      %li.list-group-item Investigar hasta entender la intención
