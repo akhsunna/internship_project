@@ -16,6 +16,6 @@
               = BookCopyUser.where(book_copy_id: copy.id).last.user.name
             - else
               available
-            = link_to 'History'
+            = link_to 'Delete',  book_copy_delete_path(copy.id), remote: true
     .modal-footer
       = link_to 'Cancel', '', class: 'btn', data: {dismiss: 'modals'}

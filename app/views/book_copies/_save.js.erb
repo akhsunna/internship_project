@@ -6,5 +6,5 @@ $("ul.errors").append($("<li />").html("<%= message.html_safe %>"))
 <% else %>
 
 $("#modals").modal("hide");
-location = "<%= book_path(@book.id) %>";
+location = "<%= user_path(current_user.id) %>";
 <% end %>
