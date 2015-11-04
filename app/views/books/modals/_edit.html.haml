@@ -25,6 +25,10 @@
           = f.label 'Year'
           = f.text_field :year, class: 'form-control'
 
+        .control-group
+          = f.label 'Change cover picture'
+          = f.file_field :cover
+
       .modal-footer
         = f.submit 'Save', class: 'btn btn-warning'
         = link_to 'Cancel', '', class: 'btn', data: {dismiss: 'modals'}

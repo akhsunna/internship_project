@@ -15,6 +15,12 @@ Rails.application.routes.draw do
     put 'remove_genre'
   end
 
+
+
+  resources :book_copies do
+    get 'delete'
+  end
+
   # match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], as: :finish_signup
 
   root to: 'books#index'

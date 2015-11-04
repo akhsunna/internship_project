@@ -17,38 +17,38 @@
       = BookCopy.where(book_id: @book.id).count
 
       %br
-      %br
 
-      .panel.panel-default
-        .panel-heading
-          %h3.panel-title Copies
-        %ul.list-group
-          - @copies.each do |copy|
-            %li.list-group-item
-              %div{ id: "dropdown-detail-#{copy.id}", class: 'row toggle', 'data-toggle' => "detail-#{copy.id}" }
-                .col-xs-10{style: copy.available ? 'color:green;' : 'color:red;'}
-                  = copy.isbn
-                .col-xs-2
-                  %i.fa.fa-chevron-down.pull-right
-              %div{id: "detail-#{copy.id}"}
-                %hr
-                .container
-                  .fluid-row
-                    Status now:
-                    - if !copy.available
-                      not
-                    available
-                    %br
-                    %b History
-                    %br
-                    - copy.book_copy_users.each do |cu|
-                      User:
-                      = cu.user.name
-                      Return date:
-                      = cu.return_date || 'not returned'
+      - if current_user.moderator?
+        %br
+
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title Copies
+          %ul.list-group
+            - @copies.each do |copy|
+              %li.list-group-item
+                %div{ id: "dropdown-detail-#{copy.id}", class: 'row toggle', 'data-toggle' => "detail-#{copy.id}" }
+                  .col-xs-10{style: copy.available ? 'color:green;' : 'color:red;'}
+                    = copy.isbn
+                  .col-xs-2
+                    %i.fa.fa-chevron-down.pull-right
+                %div{id: "detail-#{copy.id}"}
+                  %hr
+                  .container
+                    .fluid-row
+                      Status now:
+                      - if !copy.available
+                        not
+                      available
                       %br
-
-
+                      %b History
+                      %br
+                      - copy.book_copy_users.each do |cu|
+                        User:
+                        = cu.user.name
+                        Return date:
+                        = cu.return_date || 'not returned'
+                        %br
 
 
     .col-md-3

@@ -8,8 +8,8 @@
       - @books.each do |book|
         .col-xs-6.col-lg-4
           %center
-            %h2= book.title
-            %h4= link_to book.author.first_name + book.author.last_name
+            %h2= link_to book.title, book_path(book.id)
+            %h4= link_to book.author.first_name + book.author.last_name, author_path(book.author)
             = image_tag book.cover.url(:square), class: 'img-circle'
 
 
