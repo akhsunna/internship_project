@@ -13,9 +13,13 @@ class BooksController < ApplicationController
     @copies = @book.book_copies
 
     @copies.each do |c|
-      if current_user.book_copy_users.where(book_copy_id: c.id).first
-        @user_have_book = true
-        @mybook = c.isbn
+      @bcu = current_user.book_copy_users.where(book_copy_id: c.id).last
+      if @bcu
+        if !@bcu.return_date
+          @user_have_book = true
+          @mybook = c.isbn
+          return
+        end
       end
     end
   end
@@ -130,7 +134,10 @@ class BooksController < ApplicationController
     @book_copy.available = true
     @book_copy.save!
 
-    BookCopyUser.where(book_copy_id: @book_copy.id, user_id: @user.id).first.destroy
+    @book_copy_user = BookCopyUser.where(book_copy_id: @book_copy.id, user_id: @user.id).first
+    @book_copy_user.return_date = Time.now
+    @book_copy_user.save!
+
     respond_to do |format|
       format.js {render inline: 'location.reload();' }
     end
