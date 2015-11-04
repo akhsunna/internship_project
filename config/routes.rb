@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     get 'delete'
     get 'genres'
     get 'copies'
+    put 'create_copy'
   end
 
   # match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], as: :finish_signup
