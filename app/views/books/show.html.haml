@@ -51,13 +51,13 @@
                         %br
       - else
         - if !@user_have_book
-          =link_to '#' do
+          = link_to book_take_path(@book.id), method: :put, remote: true do
             .btn.btn-primary
               ='Take it'
         - else
-          =link_to '#' do
+          = link_to book_return_path(@book.id), method: :put, remote: true do
             .btn.btn-danger
-              = link_to 'Return it'
+              = 'Return ' + @mybook
 
 
     .col-md-3

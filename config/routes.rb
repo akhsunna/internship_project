@@ -13,15 +13,15 @@ Rails.application.routes.draw do
     put 'create_copy'
     put 'add_genre'
     put 'remove_genre'
+
+    put 'take'
+    put 'return'
   end
 
 
 
   resources :book_copies do
     get 'delete'
-
-    put 'take'
-    put 'return'
   end
 
   # match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], as: :finish_signup

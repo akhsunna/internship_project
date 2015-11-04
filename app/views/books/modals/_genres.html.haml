@@ -13,6 +13,6 @@
               = link_to book_remove_genre_path(genre_id: genre.id,book_id: @book.id), method: :put, remote: true, style: 'text-decoration: none;' do
                 %li.list-group-item{'data-checked' => 'true'}= genre.name
             -else
-              = link_to book_add_genre_path(genre_id: genre.id,book_id: @book.id), method: :put, remote: true, style: 'text-decoration: none;' do
+              = link_to book_add_genre_path(genre_id: genre.id, book_id: @book.id), method: :put, remote: true, style: 'text-decoration: none;' do
                 %li.list-group-item= genre.name
     .modal-footer

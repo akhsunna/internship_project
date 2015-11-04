@@ -15,6 +15,7 @@ class BooksController < ApplicationController
     @copies.each do |c|
       if current_user.book_copy_users.where(book_copy_id: c.id).first
         @user_have_book = true
+        @mybook = c.isbn
       end
     end
   end
@@ -87,11 +88,13 @@ class BooksController < ApplicationController
   end
 
 
+
+
   def add_genre
     @book = Book.find(params[:book_id])
     @genre = Genre.find(params[:genre_id])
 
-    @new_group_subject = @book.book_genres.create(genre_id: @genre.id)
+    @new_book_genre = @book.book_genres.create(genre_id: @genre.id)
   end
 
   def remove_genre
@@ -99,6 +102,38 @@ class BooksController < ApplicationController
     @genre = Genre.find(params[:genre_id])
 
     BookGenre.where(genre_id: @genre.id, book_id: @book.id).first.destroy
+  end
+
+
+
+
+
+  def take
+    @book = Book.find(params[:book_id])
+    @book_copy = BookCopy.where(book_id: @book.id).first
+    @user = current_user
+
+    @book_copy.available = false
+    @book_copy.save!
+
+    @new_book_copy_user = @user.book_copy_users.create(book_copy_id: @book_copy.id)
+    respond_to do |format|
+      format.js {render inline: 'location.reload();' }
+    end
+  end
+
+  def return
+    @book = Book.find(params[:book_id])
+    @book_copy = BookCopy.where(book_id: @book.id).first
+    @user = current_user
+
+    @book_copy.available = true
+    @book_copy.save!
+
+    BookCopyUser.where(book_copy_id: @book_copy.id, user_id: @user.id).first.destroy
+    respond_to do |format|
+      format.js {render inline: 'location.reload();' }
+    end
   end
 
 
