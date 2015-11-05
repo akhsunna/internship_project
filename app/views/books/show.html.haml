@@ -58,6 +58,13 @@
           = link_to book_return_path(@book.id), method: :put, remote: true do
             .btn.btn-danger
               = 'Return ' + @mybook
+          - if @days > 0
+            %div{style: 'color:red;'}= 'You were late for ' + @days.to_s + ' days'
+          - else
+            %div{style: 'color:green;'}= 'You have ' + @days * (-1) + 'days'
+
+
+
 
 
     .col-md-3

@@ -17,6 +17,7 @@ class BooksController < ApplicationController
         if c.book_copy_users.where(user_id: current_user.id, return_date: nil).last
           @user_have_book = true
           @mybook = c.isbn
+          @days = (Date.today - BookCopyUser.where(book_copy_id: c.id).last.last_date ).to_i
           return
         end
       end
