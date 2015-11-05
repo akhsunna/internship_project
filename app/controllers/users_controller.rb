@@ -5,10 +5,14 @@ class UsersController < ApplicationController
       redirect_to moderator_path(current_user)
     end
     @user = User.find(params[:id])
+
+    @bookcopiesnow = BookCopyUser.where(user_id: current_user.id, return_date: nil)
   end
 
   def index
-    @users = User.users
+
+    @book_copies = BookCopy.where(available: false, user_id: current_user.id).reject{ |bc| BookCopyUser.where(book_copy_id: bc.id).last.last_date > Time.now }
+
   end
 
 

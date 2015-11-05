@@ -34,6 +34,28 @@ class User < ActiveRecord::Base
     role == ROLE_USER
   end
 
+  def is_debtor?
+    !BookCopyUser.where(user_id: id, return_date: nil).empty?
+  end
+
+  def have_book?(book)
+    @book = book
+    @copies = @book.book_copies
+    @copies.each do |c|
+      if !c.available
+        myc = c.book_copy_users.where(user_id: id, return_date: nil).last
+        if myc
+          return myc
+        end
+      end
+    end
+    return nil
+  end
+
+  def must_return_book?(book)
+    have_book?(book).last_date < Date.today
+  end
+
   scope :moderators, ->{ where role: ROLE_MODERATOR }
   scope :users, ->{ where role: ROLE_USER }
 

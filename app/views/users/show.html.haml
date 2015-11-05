@@ -1,11 +1,27 @@
-.col-md-2.col-md-offset-5
-  - if user_signed_in?
-    - if @user == current_user
-      Hello,
-    = @user.name
-    _books
-    .img-rounded= image_tag @user.avatar.url(:medium)
-  - else
-    = link_to 'Sign in', new_user_session_path
-    or
-    = link_to 'Sign up', new_user_registration_path
+.container
+  .row
+    .col-md-12
+      .col-md-2.col-md-offset-5
+        - if user_signed_in?
+          - if @user == current_user
+            Hello,
+          = @user.name
+      %center
+        %h1 Books that you have
+      %br
+      %table{ class: 'table table-striped table-bordred sortable' }
+        %thead
+          %tr
+            %th Title
+            %th Author
+            %th{'data-defaultsort'=>'disabled'} Cover
+            %th ISBN
+            %th Last date
+        %tbody
+          - @bookcopiesnow.each do |copyuser|
+            %tr{style: current_user.must_return_book?(copyuser.book_copy.book) ? 'color:red;' : 'color:green'}
+              %td= copyuser.book_copy.book.title
+              %td= copyuser.book_copy.book.author.last_name
+              %td
+              %td= copyuser.book_copy.isbn
+              %td= copyuser.last_date
