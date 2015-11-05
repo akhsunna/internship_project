@@ -116,7 +116,7 @@ class BooksController < ApplicationController
     @book_copy.available = false
     @book_copy.save!
 
-    @new_book_copy_user = @user.book_copy_users.create(book_copy_id: @book_copy.id)
+    @user.book_copy_users.create(book_copy_id: @book_copy.id, last_date: Date.today+7)
     respond_to do |format|
       format.js {render inline: 'location.reload();' }
     end
@@ -124,13 +124,12 @@ class BooksController < ApplicationController
 
   def return
     @book = Book.find(params[:book_id])
-    @book_copy = BookCopy.where(book_id: @book.id).first
     @user = current_user
+    @book_copy_user = current_user.have_book?(@book)
 
-    @book_copy.available = true
-    @book_copy.save!
+    @book_copy_user.book_copy.available = true
+    @book_copy_user.book_copy.save!
 
-    @book_copy_user = BookCopyUser.where(book_copy_id: @book_copy.id, user_id: @user.id).last
     @book_copy_user.return_date = Time.now
     @book_copy_user.save!
 

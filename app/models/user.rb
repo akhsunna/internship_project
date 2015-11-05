@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
         end
       end
     end
+    return nil
   end
 
   def must_return_book?(book)
