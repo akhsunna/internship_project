@@ -8,7 +8,9 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.users
+
+    @book_copies = BookCopy.where(available: false, user_id: current_user.id).reject{ |bc| BookCopyUser.where(book_copy_id: bc.id).last.last_date > Time.now }
+
   end
 
 
