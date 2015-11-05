@@ -11,6 +11,8 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @copies = BookCopy.where(book_id: @book.id)
+
     mycopy = current_user.have_book?(@book)
     if mycopy
       @user_have_book = true
