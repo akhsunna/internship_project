@@ -13,8 +13,6 @@
             = image_tag book.cover.url(:square), class: 'img-circle'
       %br
       %br
-      /
-
 
   .col-xs-6.col-sm-3.sidebar-offcanvas
     .row
@@ -27,5 +25,10 @@
       %br
       - @languages.each do |l|
         %p= link_to l.name, language_path(l.id)
+      %h3 Genres
+      %br
+      - @genres.each do |genre|
+        %p= link_to genre.name
+
 
 

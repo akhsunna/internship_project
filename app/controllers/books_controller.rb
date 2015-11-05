@@ -6,6 +6,7 @@ class BooksController < ApplicationController
     @books = Book.all.order('updated_at DESC')
     @authors = Author.all
     @languages = Language.all
+    @genres = Genre.all
   end
 
   def show

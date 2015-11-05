@@ -5,6 +5,8 @@ class UsersController < ApplicationController
       redirect_to moderator_path(current_user)
     end
     @user = User.find(params[:id])
+
+    @bookcopiesnow = BookCopyUser.where(user_id: current_user.id, return_date: nil)
   end
 
   def index
