@@ -3,7 +3,7 @@ class BooksController < ApplicationController
   respond_to :html, :js
 
   def index
-    @books = Book.all
+    @books = Book.all.order('updated_at DESC')
     @authors = Author.all
     @languages = Language.all
   end

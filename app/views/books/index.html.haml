@@ -11,7 +11,9 @@
             %h2= link_to book.title, book_path(book.id)
             %h4= link_to book.author.first_name + book.author.last_name, author_path(book.author)
             = image_tag book.cover.url(:square), class: 'img-circle'
-
+      %br
+      %br
+      /
 
 
   .col-xs-6.col-sm-3.sidebar-offcanvas
