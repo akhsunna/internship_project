@@ -11,17 +11,11 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
-    @copies = @book.book_copies
-
-    @copies.each do |c|
-      if !c.available
-        if c.book_copy_users.where(user_id: current_user.id, return_date: nil).last
-          @user_have_book = true
-          @mybook = c.isbn
-          @days = (Date.today - BookCopyUser.where(book_copy_id: c.id).last.last_date ).to_i
-          return
-        end
-      end
+    mycopy = current_user.have_book?(@book)
+    if mycopy
+      @user_have_book = true
+      @mybook = mycopy.book_copy.isbn
+      @days = (Date.today - BookCopyUser.where(book_copy_id: mycopy.book_copy.id).last.last_date ).to_i
     end
   end
 

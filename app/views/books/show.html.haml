@@ -61,7 +61,7 @@
           - if @days > 0
             %div{style: 'color:red;'}= 'You were late for ' + @days.to_s + ' days'
           - else
-            %div{style: 'color:green;'}= 'You have ' + @days * (-1) + 'days'
+            %div{style: 'color:green;'}= 'You have ' + (@days * (-1)).to_s + 'days'
 
 
 
