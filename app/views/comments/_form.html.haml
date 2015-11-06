@@ -1,15 +1,30 @@
-= form_for [@parent, @comment] do |f|
+.col-sm-3
+  .thumbnail
+    = image_tag current_user.avatar.url(:thumb), class: 'img-responsive user-photo'
+.col-sm-9
+  .panel
+    = form_for [@parent, @comment] do |f|
 
-  - if @comment.errors.any?
-    .error_messages
-      %h2 Please correct the following errors.
-      %ul
-      - @comment.errors.full_messages.each do |msg|
-        %li= msg
+      - if @comment.errors.any?
+        .error_messages
+          %h2 Please correct the following errors.
+          %ul
+          - @comment.errors.full_messages.each do |msg|
+            %li= msg
 
-  %br
-  = f.text_area :body, placeholder: :body
+      = f.hidden_field :user_id, value: current_user.id
 
-  = f.hidden_field :user_id, :value => current_user.id
+      .input-group
+        = f.text_area :body, placeholder: :body, class: 'form-control', placeholder: 'Add a comment'
 
-  %p= f.submit 'Add comment'
+        %span.input-group-addon
+          = button_tag type: 'submit' do
+            %i.fa.fa-edit
+
+
+
+
+
+
+
+

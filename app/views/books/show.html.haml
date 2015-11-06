@@ -66,14 +66,22 @@
 
     .col-md-4
 
+      .row
+        %center
+          %h2 Comments
+
+        - @parent = @book
+        = render 'comments/form'
 
       .row
+        %br
+
 
         - if @book.comments.empty?
           .no-comments No comments.
         - else
           %ul
-            - @book.comments.each do |comment|
+            - @book.comments.order('created_at DESC').each do |comment|
               .col-sm-3
                 .thumbnail
                   = image_tag comment.user.avatar.url(:thumb), class: 'img-responsive user-photo'
@@ -97,9 +105,6 @@
 
 
   .row
-    -#%h2 Comments
-    -#-#%p= link_to 'Add a Comment', new_book_comment_path(@book)
-    -#%a.comment-show Add a Comment
-    -#-#.comment-form{ style: 'display: none' }= render 'comments/form', parent: @book
-    -#.comment-form{ style: 'display: none' }=render :partial => 'comments/form', :locals => {:parent => @book}
+
+    -#=render :partial => 'comments/form', :locals => {:parent => @book}
 
