@@ -9,6 +9,8 @@ class Book < ActiveRecord::Base
 
   belongs_to :language
 
+  has_many :comments, as: :commentable
+
   validates :year, inclusion: 1800..Date.today.year
 
   has_attached_file :cover, url: '/books/:id/:style/:filename',

@@ -3,7 +3,7 @@
   .row
     .col-md-4
       %center= image_tag @book.cover.url(:large)
-    .col-md-6
+    .col-md-4
       %h1.text-primary= @book.title
       %h2= 'by '+ @book.author.first_name + ' ' + @book.author.last_name
       %br
@@ -64,9 +64,42 @@
             %div{style: 'color:green;'}= 'You have ' + (@days * (-1)).to_s + 'days'
 
 
+    .col-md-4
+
+      .row
+        %center
+          %h2 Comments
+
+        - @parent = @book
+        = render 'comments/form'
+
+      .row
+        %br
 
 
-
-    .col-md-3
-
-  .row
+        - if @book.comments.empty?
+          .no-comments No comments.
+        - else
+          %ul
+            - @book.comments.order('created_at DESC').each do |comment|
+              .col-sm-3
+                .thumbnail
+                  = image_tag comment.user.avatar.url(:thumb), class: 'img-responsive user-photo'
+              .col-sm-9
+                .panel.panel-default
+                  .panel-heading
+                    %strong= comment.user.name
+                    %span.text-muted{style: 'float:right;'}
+                      - t = ( (Time.now - comment.created_at.to_time)/1.day ).to_i
+                      - tt = ' days '
+                      - if t < 1
+                        - t = ( (Time.now - comment.created_at.to_time)/1.hour ).to_i
+                        - tt = ' hours '
+                        - if t < 1
+                          - t = ( (Time.now - comment.created_at.to_time)/1.minute ).to_i
+                          - tt = ' minutes '
+                      = t.to_s + tt + 'ago'
+                  .panel-body
+                    = comment.body
+                    - if comment.user == current_user
+                      %div{style: 'float:right;'}= link_to 'Delete', [@parent, comment], method: :delete
