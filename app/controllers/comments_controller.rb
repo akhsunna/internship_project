@@ -30,6 +30,7 @@ class CommentsController < ApplicationController
 
   def get_parent
     @parent = Book.find_by_id(params[:book_id]) if params[:book_id]
+    @parent = Author.find_by_id(params[:author_id]) if params[:author_id]
 
     redirect_to root_path unless defined?(@parent)
   end

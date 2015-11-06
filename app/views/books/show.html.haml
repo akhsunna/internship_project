@@ -103,10 +103,3 @@
                     = comment.body
                     - if comment.user == current_user
                       %div{style: 'float:right;'}= link_to 'Delete', [@parent, comment], method: :delete
-
-
-
-  .row
-
-    -#=render :partial => 'comments/form', :locals => {:parent => @book}
-

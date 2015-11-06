@@ -10,3 +10,46 @@
           = image_tag book.cover.url(:square), class: 'img-circle'
           %h2= book.title
           %p= book.language.name
+
+
+
+  .col-sm-3
+  .col-sm-6
+    .row
+      %br
+      %center
+        %h2 Comments
+
+      - @parent = @author
+      = render 'comments/form'
+
+    .row
+
+      %br
+
+      - if @author.comments.empty?
+        .no-comments No comments.
+      - else
+        %ul
+          - @author.comments.order('created_at DESC').each do |comment|
+            .col-sm-3
+              .thumbnail
+                = image_tag comment.user.avatar.url(:thumb), class: 'img-responsive user-photo'
+            .col-sm-9
+              .panel.panel-default
+                .panel-heading
+                  %strong= comment.user.name
+                  %span.text-muted{style: 'float:right;'}
+                    - t = ( (Time.now - comment.created_at.to_time)/1.day ).to_i
+                    - tt = ' days '
+                    - if t < 1
+                      - t = ( (Time.now - comment.created_at.to_time)/1.hour ).to_i
+                      - tt = ' hours '
+                      - if t < 1
+                        - t = ( (Time.now - comment.created_at.to_time)/1.minute ).to_i
+                        - tt = ' minutes '
+                    = t.to_s + tt + 'ago'
+                .panel-body
+                  = comment.body
+                  - if comment.user == current_user
+                    %div{style: 'float:right;'}= link_to 'Delete', [@parent, comment], method: :delete
