@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   has_many :book_copies
   has_many :book_copy_users
 
+  has_many :comments
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable

@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   resources :users, :moderators, :authors, :languages
 
   resources :books do
-    get 'delete'
+
+    resources :comments
 
     get 'genres'
     get 'copies'

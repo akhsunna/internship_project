@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151103141206) do
+ActiveRecord::Schema.define(version: 20151106114150) do
 
   create_table "authors", force: :cascade do |t|
     t.string "first_name", limit: 255
@@ -63,6 +63,17 @@ ActiveRecord::Schema.define(version: 20151103141206) do
   add_index "books", ["author_id"], name: "index_books_on_author_id", using: :btree
   add_index "books", ["language_id"], name: "index_books_on_language_id", using: :btree
   add_index "books", ["user_id"], name: "index_books_on_user_id", using: :btree
+
+  create_table "comments", force: :cascade do |t|
+    t.text     "body",             limit: 65535
+    t.integer  "commentable_id",   limit: 4
+    t.string   "commentable_type", limit: 255
+    t.integer  "user_id",          limit: 4,     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
 
   create_table "ganres", force: :cascade do |t|
     t.string "name", limit: 255

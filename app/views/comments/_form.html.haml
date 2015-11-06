@@ -1,0 +1,15 @@
+= form_for [@parent, @comment] do |f|
+
+  - if @comment.errors.any?
+    .error_messages
+      %h2 Please correct the following errors.
+      %ul
+      - @comment.errors.full_messages.each do |msg|
+        %li= msg
+
+  %br
+  = f.text_area :body, placeholder: :body
+
+  = f.hidden_field :user_id, :value => current_user.id
+
+  %p= f.submit 'Add comment'
