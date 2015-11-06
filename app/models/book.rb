@@ -20,4 +20,14 @@ class Book < ActiveRecord::Base
   validates_attachment :cover,
                        content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
 
+  scope :genre, -> (genre) { BookGenre.genre(genre).map{ |bg| bg.book } }
+
+  scope :genres, -> (genres) do
+    a = Array.new
+    genres.each{ |g|
+      a = a | self.genre(g)
+    }
+    return a
+  end
+
 end

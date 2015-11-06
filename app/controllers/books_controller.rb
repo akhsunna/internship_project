@@ -9,6 +9,11 @@ class BooksController < ApplicationController
     @genres = Genre.all
   end
 
+  def search
+    @books = Book.search(params[:q]).page(params[:page]).records
+    render action: 'index'
+  end
+
   def show
     @book = Book.find(params[:id])
     @copies = BookCopy.where(book_id: @book.id)
