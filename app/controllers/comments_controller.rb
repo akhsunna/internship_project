@@ -16,6 +16,16 @@ class CommentsController < ApplicationController
     end
   end
 
+  def destroy
+    @comment = @parent.comments.find(params[:id])
+    if @comment.destroy
+      flash[:notice] = "Comment was removed"
+      redirect_to @parent
+    else
+      flash[:notice] = "There was an error removing comment"
+    end
+  end
+
   protected
 
   def get_parent

@@ -101,6 +101,8 @@
                       = t.to_s + tt + 'ago'
                   .panel-body
                     = comment.body
+                    - if comment.user == current_user
+                      %div{style: 'float:right;'}= link_to 'Delete', [@parent, comment], method: :delete
 
 
 
