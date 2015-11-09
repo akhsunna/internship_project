@@ -14,6 +14,14 @@ class BooksController < ApplicationController
       @genres = Genre.find(genre_ids)
       @books = Book.genres(@genres)
     end
+
+    if params[:author]
+      @filter_author = Author.where(last_name: params[:author])
+      @filter_author.each do |a|
+        @books = @books.where(author_id: a.id)
+      end
+    end
+
   end
 
 
