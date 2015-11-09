@@ -2,7 +2,6 @@
   .col-xs-12.col-sm-9
     .jumbotron
       %h1 MyLibrary
-      -#%p This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.
 
     .row
       - @books.each do |book|
@@ -40,7 +39,6 @@
       %h3 Filter by genres
       = form_tag books_path, class: 'form-inline', name: 'genres_form', method: 'get' do
 
-
         %div{style: 'color:blue;'}
           = check_box_tag 'check_all', 'check_all', false, class: 'check', id: 'checkAll'
           = 'Check all'
@@ -48,12 +46,10 @@
 
         .input-group
           - Genre.all.each do |genre|
-            -#= check_box_tag(name = genre.name, value = genre.id, checked = false, options = {})
-
             = check_box_tag 'genre_ids[]', genre.id, @genres.include?(genre) ? true : false, class: 'check'
-
             = genre.name
             %br
+
           = submit_tag 'Filter', class: 'btn'
 
 

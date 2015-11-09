@@ -15,10 +15,10 @@ class BooksController < ApplicationController
     end
 
     if params[:author]
-      @filter_author = Author.where(last_name: params[:author])
-      @filter_author.each do |a|
-        @books = @books.where(author_id: a.id)
-      end
+      @filter_author = Author.where('last_name = ? OR first_name = ?', params[:author], params[:author])
+      author_ids = @filter_author.map(&:id)
+      # @filter_author |= Author.where(first_name: params[:author])
+      @books = Book.where('author_id IN (?)', author_ids)
     end
 
     if params[:title]
