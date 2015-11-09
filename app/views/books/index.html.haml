@@ -34,18 +34,30 @@
           = text_field_tag :author, params[:author], placeholder: 'Author', class: 'form-control'
           %br
           = submit_tag 'Search', class: 'btn'
+          %div{style: 'float:right;'}= link_to 'Cancel'
 
     .row
-      %h3 Filter
-      = form_tag books_path, class: 'form-inline', method: 'get' do
+      %h3 Filter by genres
+      = form_tag books_path, class: 'form-inline', name: 'genres_form', method: 'get' do
+
+
+        %div{style: 'color:blue;'}
+          = check_box_tag 'check_all', 'check_all', false, class: 'check', id: 'checkAll'
+          = 'Check all'
+        %br
+
         .input-group
           - Genre.all.each do |genre|
             -#= check_box_tag(name = genre.name, value = genre.id, checked = false, options = {})
 
-            - c = @genres.include? genre ? true : false
-
-            = check_box_tag 'genre_ids[]', genre.id, @genres.include?(genre) ? true : false
+            = check_box_tag 'genre_ids[]', genre.id, @genres.include?(genre) ? true : false, class: 'check'
 
             = genre.name
             %br
           = submit_tag 'Filter', class: 'btn'
+
+
+:javascript
+  $("#checkAll").click(function () {
+      $(".check").prop('checked', $(this).prop('checked'));
+  });

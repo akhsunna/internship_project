@@ -44,6 +44,12 @@ gem 'paperclip', '~> 4.3'
 # For admin
 gem 'rails_admin'
 
+
+
+gem 'rubocop', require: false
+
+
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

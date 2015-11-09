@@ -1,5 +1,5 @@
+# Controller for comments
 class CommentsController < ApplicationController
-
   before_filter :get_parent
 
   def new
@@ -19,10 +19,10 @@ class CommentsController < ApplicationController
   def destroy
     @comment = @parent.comments.find(params[:id])
     if @comment.destroy
-      flash[:notice] = "Comment was removed"
+      flash[:notice] = 'Comment was removed'
       redirect_to @parent
     else
-      flash[:notice] = "There was an error removing comment"
+      flash[:notice] = 'There was an error removing comment'
     end
   end
 
@@ -40,5 +40,4 @@ class CommentsController < ApplicationController
   def comment_params
     params.require(:comment).permit(:user_id, :body)
   end
-
 end

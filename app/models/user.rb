@@ -1,5 +1,5 @@
+# User model
 class User < ActiveRecord::Base
-
   has_many :identities, dependent: :destroy
   has_many :books
 
@@ -14,8 +14,10 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
 
-
-  has_attached_file :avatar, styles: { medium: '300x300>', thumb: '100x100>', default_url: '/default/missing.png' }
+  has_attached_file :avatar,
+                    styles: { medium: '300x300>',
+                              thumb: '100x100>',
+                              default_url: '/default/missing.png' }
   validates_attachment :avatar,
                        content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] },
                        size: { in: 0..1000.kilobytes }
@@ -23,10 +25,6 @@ class User < ActiveRecord::Base
   ROLE_ADMIN = 'admin'
   ROLE_MODERATOR = 'moderator'
   ROLE_USER = 'user'
-
-  # def admin?
-  #   role == ROLE_ADMIN
-  # end
 
   def moderator?
     role == ROLE_MODERATOR
@@ -44,11 +42,9 @@ class User < ActiveRecord::Base
     @book = book
     @copies = @book.book_copies
     @copies.each do |c|
-      if !c.available
+      unless c.available
         myc = c.book_copy_users.where(user_id: id, return_date: nil).last
-        if myc
-          return myc
-        end
+        return myc if myc
       end
     end
     return nil
@@ -58,28 +54,25 @@ class User < ActiveRecord::Base
     have_book?(book).last_date < Date.today
   end
 
-  scope :moderators, ->{ where role: ROLE_MODERATOR }
-  scope :users, ->{ where role: ROLE_USER }
+  scope :moderators, -> { where role: ROLE_MODERATOR }
+  scope :users, -> { where role: ROLE_USER }
 
-  def self.find_for_oauth(auth, signed_in_resource = nil)
+  def self.find_for_oauth(auth)
     identity = Identity.where(provider: auth.provider, uid: auth.uid).first
     if identity
       user = identity.user
     else
       user = User.where(email: auth.info.email).first
       if user.nil?
-        user = User.new(
-            name: auth.extra.raw_info[:name],
-            email: auth.extra.raw_info[:email] ,
-            password: Devise.friendly_token[0,20],
-            role: 'user'
-        )
+        user = User.new(name: auth.extra.raw_info[:name],
+                        email: auth.extra.raw_info[:email],
+                        password: Devise.friendly_token[0, 20],
+                        role: 'user')
         user.save!
       end
-      identity = Identity.new(
-          provider: auth.provider,
-          uid: auth.uid,
-          user_id: user.id)
+      identity = Identity.new(provider: auth.provider,
+                              uid: auth.uid,
+                              user_id: user.id)
       identity.save!
     end
     if identity.user != user
@@ -88,5 +81,4 @@ class User < ActiveRecord::Base
     end
     user
   end
-
 end

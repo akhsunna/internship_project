@@ -1,5 +1,4 @@
 class BookCopiesController < ApplicationController
-
   def delete
     @book_copy = BookCopy.find(params[:book_copy_id])
     @book = @book_copy.book
@@ -11,5 +10,4 @@ class BookCopiesController < ApplicationController
     @book = @book_copy.book
     @book_copy.destroy
   end
-
 end

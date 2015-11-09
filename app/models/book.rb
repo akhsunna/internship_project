@@ -1,3 +1,4 @@
+# Book model
 class Book < ActiveRecord::Base
   belongs_to :user
   belongs_to :author
@@ -13,21 +14,21 @@ class Book < ActiveRecord::Base
 
   validates :year, inclusion: 1800..Date.today.year
 
-  has_attached_file :cover, url: '/books/:id/:style/:filename',
+  has_attached_file :cover,
+                    url: '/books/:id/:style/:filename',
                     path: ':rails_root/public/books/:id/:style/:filename',
                     styles: { small: 'x200', large: '500x500>', square: '200x200#' },
                     default_url: '/books/default/:style/default.png'
   validates_attachment :cover,
                        content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
 
-  scope :genre, -> (genre) { BookGenre.genre(genre).map{ |bg| bg.book } }
+  scope :genre, -> (genre) { BookGenre.genre(genre).map { |bg| bg.book } }
 
   scope :genres, -> (genres) do
-    a = Array.new
+    a = []
     genres.each{ |g|
-      a = a | self.genre(g)
+      a |= self.genre(g)
     }
     return a
   end
-
 end
