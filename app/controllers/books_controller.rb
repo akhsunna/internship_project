@@ -4,7 +4,7 @@ class BooksController < ApplicationController
 
   def index
     @books = Book.all.order('updated_at DESC')
-    @authors = Author.all.reverse_each(&:readers)
+    @authors = Author.all.reverse_each(&:readers).first(8)
     @languages = Language.all
     @genres = Genre.all
 

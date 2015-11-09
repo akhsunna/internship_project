@@ -35,10 +35,11 @@
         %h4 Search
         = form_tag books_path, class: 'form-inline', method: 'get' do
           .input-group
-            = text_field_tag :title, params[:title], placeholder: 'Title', class: 'form-control'
-            = text_field_tag :author, params[:author], placeholder: 'Author', class: 'form-control'
+            = text_field_tag :title, params[:title], placeholder: 'Title', class: 'form-control', style: 'margin-bottom:5%;'
             %br
-            = submit_tag 'Search', class: 'btn'
+            = text_field_tag :author, params[:author], placeholder: 'Author', class: 'form-control', style: 'margin-bottom:5%;'
+            %br
+            = submit_tag 'Search', class: 'btn btn-default'
             %div{style: 'float:right;'}= link_to 'Cancel'
 
     .row
@@ -46,7 +47,7 @@
         %h4 Filter by genres
         = form_tag books_path, class: 'form-inline', name: 'genres_form', method: 'get' do
 
-          %div{style: 'color:blue;'}
+          %div
             = check_box_tag 'check_all', 'check_all', false, class: 'check', id: 'checkAll'
             = 'Check all'
           %br
@@ -57,7 +58,8 @@
               = genre.name
               %br
 
-            = submit_tag 'Filter', class: 'btn'
+            %br
+            = submit_tag 'Filter', class: 'btn btn-default', style: 'width:100%;'
 
 
 :javascript

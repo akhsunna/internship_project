@@ -78,7 +78,7 @@
 
 
         - if @book.comments.empty?
-          .no-comments No comments.
+          %center No comments.
         - else
           %ul
             - @book.comments.order('created_at DESC').each do |comment|
