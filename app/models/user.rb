@@ -35,7 +35,11 @@ class User < ActiveRecord::Base
   end
 
   def is_debtor?
-    !BookCopyUser.where(user_id: id, return_date: nil).empty?
+    bc = BookCopyUser.where(user_id: id, return_date: nil)
+    bc.each do |b|
+      return true if must_return_book? b.book_copy.book
+    end
+    return false
   end
 
   def have_book?(book)

@@ -1,6 +1,6 @@
 .container
   .col-xs-12.col-sm-9
-    .jumbotron
+    .jumbotron{style: 'padding:10%;margin:0;'}
       %h1 MyLibrary
 
     .row
@@ -9,48 +9,55 @@
           %center
             %h2= link_to book.title, book_path(book.id)
             %h4= link_to book.author.first_name + book.author.last_name, author_path(book.author)
-            = image_tag book.cover.url(:square), class: 'img-circle'
+            = image_tag book.cover.url(:small), class: 'img'
       %br
       %br
 
   .col-xs-6.col-sm-3.sidebar-offcanvas
     .row
-      %h3 Authors
-      %br
-      - @authors.each do |author|
-        %p= link_to author.first_name + ' ' + author.last_name, author_path(author.id)
-    .row
-      %h3 Languages:
-      %br
-      - @languages.each do |l|
-        %p= link_to l.name, language_path(l.id)
-
-    .row
-      %h3 Search
-      = form_tag books_path, class: 'form-inline', method: 'get' do
-        .input-group
-          = text_field_tag :title, params[:title], placeholder: 'Title', class: 'form-control'
-          = text_field_tag :author, params[:author], placeholder: 'Author', class: 'form-control'
-          %br
-          = submit_tag 'Search', class: 'btn'
-          %div{style: 'float:right;'}= link_to 'Cancel'
-
-    .row
-      %h3 Filter by genres
-      = form_tag books_path, class: 'form-inline', name: 'genres_form', method: 'get' do
-
-        %div{style: 'color:blue;'}
-          = check_box_tag 'check_all', 'check_all', false, class: 'check', id: 'checkAll'
-          = 'Check all'
+      .jumbotron
+        %h3 Top authors
         %br
+        - @authors.each do |author|
+          = link_to author.first_name + ' ' + author.last_name, author_path(author.id)
+          %div{style: 'float:right;'}= author.readers
+          %br
+    .row
+      .jumbotron
+        %h3 Languages:
+        %br
+        - @languages.each do |l|
+          = link_to l.name, language_path(l.id)
+          %br
 
-        .input-group
-          - Genre.all.each do |genre|
-            = check_box_tag 'genre_ids[]', genre.id, @genres.include?(genre) ? true : false, class: 'check'
-            = genre.name
+    .row
+      .jumbotron
+        %h4 Search
+        = form_tag books_path, class: 'form-inline', method: 'get' do
+          .input-group
+            = text_field_tag :title, params[:title], placeholder: 'Title', class: 'form-control'
+            = text_field_tag :author, params[:author], placeholder: 'Author', class: 'form-control'
             %br
+            = submit_tag 'Search', class: 'btn'
+            %div{style: 'float:right;'}= link_to 'Cancel'
 
-          = submit_tag 'Filter', class: 'btn'
+    .row
+      .jumbotron
+        %h4 Filter by genres
+        = form_tag books_path, class: 'form-inline', name: 'genres_form', method: 'get' do
+
+          %div{style: 'color:blue;'}
+            = check_box_tag 'check_all', 'check_all', false, class: 'check', id: 'checkAll'
+            = 'Check all'
+          %br
+
+          .input-group
+            - Genre.all.each do |genre|
+              = check_box_tag 'genre_ids[]', genre.id, @genres.include?(genre) ? true : false, class: 'check'
+              = genre.name
+              %br
+
+            = submit_tag 'Filter', class: 'btn'
 
 
 :javascript

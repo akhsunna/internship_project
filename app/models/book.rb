@@ -17,7 +17,7 @@ class Book < ActiveRecord::Base
   has_attached_file :cover,
                     url: '/books/:id/:style/:filename',
                     path: ':rails_root/public/books/:id/:style/:filename',
-                    styles: { small: 'x200', large: '500x500>', square: '200x200#' },
+                    styles: { small: 'x200', large: '500x500>' },
                     default_url: '/books/default/:style/default.png'
   validates_attachment :cover,
                        content_type: { content_type: ['image/jpeg', 'image/gif', 'image/png'] }
@@ -30,5 +30,13 @@ class Book < ActiveRecord::Base
       a |= self.genre(g)
     }
     return a
+  end
+
+
+  # scope :readers, -> {BookCopyUser.where('book_copy_id IN (?)', BookCopy.where(book_id: :id).map(&:id)).count }
+
+  def readers
+    bookcopies = BookCopy.where(book_id: id).map(&:id)
+    return BookCopyUser.where(book_copy_id: bookcopies).count
   end
 end
