@@ -39,8 +39,13 @@
       %h3 Filter
       = form_tag books_path, class: 'form-inline', method: 'get' do
         .input-group
-          - @genres.each do |genre|
-            = check_box_tag(name = genre.name, value = genre.id, checked = false, options = {})
+          - Genre.all.each do |genre|
+            -#= check_box_tag(name = genre.name, value = genre.id, checked = false, options = {})
+
+            - c = @genres.include? genre ? true : false
+
+            = check_box_tag 'genre_ids[]', genre.id, @genres.include?(genre) ? true : false
+
             = genre.name
             %br
           = submit_tag 'Filter', class: 'btn'

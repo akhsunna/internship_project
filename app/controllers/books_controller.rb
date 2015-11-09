@@ -7,7 +7,15 @@ class BooksController < ApplicationController
     @authors = Author.all
     @languages = Language.all
     @genres = Genre.all
+
+
+    genre_ids = params[:genre_ids].collect {|id| id.to_i} if params[:genre_ids]
+    if genre_ids
+      @genres = Genre.find(genre_ids)
+      @books = Book.genres(@genres)
+    end
   end
+
 
   def search
     @books = Book.search(params[:q]).page(params[:page]).records
