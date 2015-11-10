@@ -3,8 +3,6 @@ class UsersController < ApplicationController
   def show
     redirect_to moderator_path(current_user) if current_user.moderator?
     @user = User.find(params[:id])
-
-
     @bookcopies = BookCopyUser.where(user_id: current_user.id)
     @bookcopiesnow = @bookcopies.where(return_date: nil)
     @bookcopiesnotnow = @bookcopies.where.not(return_date: nil)

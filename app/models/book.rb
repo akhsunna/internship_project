@@ -12,6 +12,9 @@ class Book < ActiveRecord::Base
 
   has_many :comments, as: :commentable
 
+  after_save :load_into_soulmate
+  before_destroy :remove_from_soulmate
+
   validates :year, inclusion: 1800..Date.today.year
 
   has_attached_file :cover,
@@ -32,11 +35,26 @@ class Book < ActiveRecord::Base
     return a
   end
 
+  scope :title_like, -> (title) { where('title like ?', title) }
 
   # scope :readers, -> {BookCopyUser.where('book_copy_id IN (?)', BookCopy.where(book_id: :id).map(&:id)).count }
 
   def readers
     bookcopies = BookCopy.where(book_id: id).map(&:id)
     return BookCopyUser.where(book_copy_id: bookcopies).count
+  end
+
+  private
+
+  def load_into_soulmate
+    loader = Soulmate::Loader.new('books')
+    loader.add('term' => title, 'id' => self.id, 'data' => {
+                                      'link' => Rails.application.routes.url_helpers.book_path(self)
+                                  })
+  end
+
+  def remove_from_soulmate
+    loader = Soulmate::Loader.new('books')
+    loader.remove('id' => self.id)
   end
 end

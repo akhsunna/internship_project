@@ -1,6 +1,6 @@
 # Controller for books
 class BooksController < ApplicationController
-  respond_to :html, :js
+  respond_to :html, :js, :json
 
   def index
     @books = Book.all.order('updated_at DESC')
@@ -8,7 +8,7 @@ class BooksController < ApplicationController
     @languages = Language.all
     @genres = Genre.all
 
-    genre_ids = params[:genre_ids].collect { |id| id.to_i } if params[:genre_ids]
+    genre_ids = params[:genre_ids].collect(&:to_i) if params[:genre_ids]
     if genre_ids
       @genres = Genre.find(genre_ids)
       @books = Book.genres(@genres)
@@ -17,25 +17,21 @@ class BooksController < ApplicationController
     if params[:author]
       @filter_author = Author.where('last_name = ? OR first_name = ?', params[:author], params[:author])
       author_ids = @filter_author.map(&:id)
-      # @filter_author |= Author.where(first_name: params[:author])
       @books = Book.where('author_id IN (?)', author_ids)
     end
 
     if params[:title]
-      @books = @books.where('title LIKE ?', "%#{params[:title]}%")
+      @books = Book.title_like("%#{params[:title]}%").order('title')
     end
+
+
   end
 
-  def search
-    @books = Book.search(params[:q]).page(params[:page]).records
-    render action: 'index'
-  end
 
   def show
     @book = Book.find(params[:id])
     @copies = BookCopy.where(book_id: @book.id)
     @comment = Comment.new
-
     mycopy = current_user.have_book?(@book)
     return unless mycopy
     @user_have_book = true

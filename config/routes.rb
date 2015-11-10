@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     put 'return'
   end
 
+  mount Soulmate::Server, at: "/autocomplete"
+
   resources :authors do
     resources :comments
   end

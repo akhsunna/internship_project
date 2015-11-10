@@ -1,3 +1,4 @@
+# Controller for book copies
 class BookCopiesController < ApplicationController
   def delete
     @book_copy = BookCopy.find(params[:book_copy_id])
