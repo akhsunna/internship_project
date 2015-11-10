@@ -3,13 +3,6 @@
     .jumbotron{style: 'padding:10%;margin:0;'}
       %h1 MyLibrary
 
-      = form_tag do
-        = text_field_tag 'search', nil, placeholder: 'Search', autocomplete: :off
-
-
-
-
-
     .row
       - @books.each do |book|
         .col-xs-6.col-lg-4
