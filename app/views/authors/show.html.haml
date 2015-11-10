@@ -7,7 +7,7 @@
     - @books.each do |book|
       .col-xs-4.col-lg-3
         %center
-          = image_tag book.cover.url(:square), class: 'img-circle'
+          = image_tag book.cover.url(:small), class: 'img'
           %h2= book.title
           %p= book.language.name
 
@@ -28,7 +28,7 @@
       %br
 
       - if @author.comments.empty?
-        .no-comments No comments.
+        %center No comments.
       - else
         %ul
           - @author.comments.order('created_at DESC').each do |comment|

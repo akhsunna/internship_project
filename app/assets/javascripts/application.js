@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require jquery.remotipart
+//= require jquery-ui
+//= require jquery.soulmate
 //= require_tree .
 
 $(document).ready(function() {
@@ -25,6 +27,55 @@ $(document).ready(function() {
     });
 });
 
+
+
+
+
+
+var ready = function(){
+    var render, select;
+
+    render = function(term, data, type) {
+        var title;
+        title = term;
+        if(data.author != null) {
+            title = "'" + term + "'" + " by " + data.author;
+        }
+        if(data.first_name != null){
+            title = data.first_name + " " + term;
+        }
+
+        return title;
+    }
+
+    select = function(term, data, type){
+        // populate our search form with the autocomplete result
+        $('#search').val(term);
+
+        // hide our autocomplete results
+        $('ul#soulmate').hide();
+
+        // then redirect to the result's link
+        // remember we have the link in the 'data' metadata
+        return window.location.href = data.link
+    }
+
+    $('#search').soulmate({
+        url: '/autocomplete/search',
+        types: ['books','authors'],
+        renderCallback : render,
+        selectCallback : select,
+        minQueryLength : 2,
+        maxResults     : 5
+    })
+
+
+}
+// when our document is ready, call our ready function
+$(document).ready(ready);
+
+// if using turbolinks, listen to the page:load event and fire our ready function
+$(document).on('page:load', ready);
 
 
 
