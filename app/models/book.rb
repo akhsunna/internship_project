@@ -48,8 +48,10 @@ class Book < ActiveRecord::Base
 
   def load_into_soulmate
     loader = Soulmate::Loader.new('books')
+    author =  Author.find(author_id).first_name + ' ' + Author.find(author_id).first_name
     loader.add('term' => title, 'id' => self.id, 'data' => {
-                                      'link' => Rails.application.routes.url_helpers.book_path(self)
+                                      'link' => Rails.application.routes.url_helpers.book_path(self),
+                                      'author' => author
                                   })
   end
 

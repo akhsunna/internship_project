@@ -36,7 +36,16 @@ var ready = function(){
     var render, select;
 
     render = function(term, data, type) {
-        return term;
+        var title;
+        title = term;
+        if(data.author != null) {
+            title = "'" + term + "'" + " by " + data.author;
+        }
+        if(data.first_name != null){
+            title = data.first_name + " " + term;
+        }
+
+        return title;
     }
 
     select = function(term, data, type){

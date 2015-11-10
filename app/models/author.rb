@@ -16,7 +16,8 @@ class Author < ActiveRecord::Base
   def load_into_soulmate
     loader = Soulmate::Loader.new('authors')
     loader.add('term' => last_name, 'id' => self.id, 'data' => {
-                                 'link' => Rails.application.routes.url_helpers.author_path(self)
+                                 'link' => Rails.application.routes.url_helpers.author_path(self),
+                                 'first_name' => first_name
                              })
   end
 
