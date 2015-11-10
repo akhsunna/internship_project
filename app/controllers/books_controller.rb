@@ -23,8 +23,6 @@ class BooksController < ApplicationController
     if params[:title]
       @books = Book.title_like("%#{params[:title]}%").order('title')
     end
-
-
   end
 
 
@@ -84,25 +82,14 @@ class BooksController < ApplicationController
   end
 
   def create_copy
-    @copy = BookCopy.new
-    @copy.isbn = generate_isbn
-    @copy.user_id = current_user.id
-    @copy.available = true
-    @copy.book_id = params[:book_id]
-    if BookCopy.where(isbn: @copy.isbn).first
-      book_create_copy_path(params[:book_id])
-    else
-      @copy.save!
-      redirect_to user_path(current_user)
-    end
+    copy = BookCopy.new
+    copy.user_id = current_user.id
+    copy.available = true
+    copy.book_id = params[:book_id]
+    copy.save!
+    redirect_to user_path(current_user)
   end
 
-  def generate_isbn
-    @a = (0...3).map { (65 + rand(26)).chr }.join
-    @b = rand(10**3).to_s.rjust(3)
-    @c = (0...3).map { (65 + rand(26)).chr }.join
-    @isbn = [@a, @b, @c].join('-')
-  end
 
   def add_remove_genre
     @book = Book.find(params[:book_id])
