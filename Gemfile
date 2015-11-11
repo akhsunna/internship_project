@@ -45,10 +45,14 @@ gem 'paperclip', '~> 4.3'
 # For admin
 gem 'rails_admin'
 
-
+# For autocomplete
 gem 'rack-contrib'
 gem 'soulmate', require: 'soulmate/server'
 
+# For mail-timer
+gem 'delayed_job_active_record'
+gem 'figaro'
+gem 'mailcatcher'
 
 
 gem 'rubocop', require: false

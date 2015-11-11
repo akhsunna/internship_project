@@ -112,8 +112,16 @@ class BooksController < ApplicationController
     @book_copy.available = false
     @book_copy.save!
 
-    @user.book_copy_users.create(book_copy_id: @book_copy.id,
+    @bookcopyuser = @user.book_copy_users.create(book_copy_id: @book_copy.id,
                                  last_date: Date.today + 7)
+
+    # ReminderEmailJob.set(wait: 7.seconds).perform_now(@user, @book)
+
+    #UserMailer.delay(run_at: 20.seconds.from_now).reminder_email(@user, @book)
+    UserMailer.delay(run_at: 7.days.from_now).reminder_email(@user, @book)
+    @bookcopyuser.job_id = Delayed::Job.last.id
+    @bookcopyuser.save!
+
     respond_to do |format|
       format.js { render inline: 'location.reload();' }
     end
@@ -129,6 +137,11 @@ class BooksController < ApplicationController
 
     @book_copy_user.return_date = Time.now
     @book_copy_user.save!
+
+    if @book_copy_user.return_date < @book_copy_user.last_date
+      job = Delayed::Job.find(@book_copy_user.job_id)
+      job.delete
+    end
 
     respond_to do |format|
       format.js { render inline: 'location.reload();' }
