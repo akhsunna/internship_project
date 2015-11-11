@@ -24,8 +24,6 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-
-
   resources :book_copies do
     get 'delete'
   end

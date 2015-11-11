@@ -17,6 +17,7 @@
 
 .idea/
 config/database.yml
+config/application.yml
 
 public/books/
 !/public/books/default/

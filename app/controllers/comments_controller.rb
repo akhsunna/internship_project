@@ -1,6 +1,6 @@
 # Controller for comments
 class CommentsController < ApplicationController
-  before_filter :get_parent
+  before_filter :getparent
 
   def new
     @comment = @parent.comments.build
@@ -28,7 +28,7 @@ class CommentsController < ApplicationController
 
   protected
 
-  def get_parent
+  def getparent
     @parent = Book.find_by_id(params[:book_id]) if params[:book_id]
     @parent = Author.find_by_id(params[:author_id]) if params[:author_id]
 

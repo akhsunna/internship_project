@@ -5,14 +5,14 @@
     font: 12px/14px "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
     list-style: none;
-    /*margin: 0 0 0 10px;*/
+    margin: 0 0 0 10px;
     padding: 0;
     position: absolute;
     text-shadow: 0 0 0 white;
     /* play around with the top and left properties for correct positioning */
-    /*top: 201px;*/
-    /*left: 460px;*/
-    width: 579px;
+    top: 35px;
+    left: -10px;
+    width: 400px;
     z-index: 1000;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -38,7 +38,7 @@
     float: right;
     list-style: none;
     padding: 5px 0;
-    width: 490px;
+    width: 320px;
     letter-spacing: 0.5px;
 }
 #soulmate .soulmate-suggestion {

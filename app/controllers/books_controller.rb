@@ -4,7 +4,7 @@ class BooksController < ApplicationController
 
   def index
     @books = Book.all.order('updated_at DESC')
-    @authors = Author.all.reverse_each(&:readers).first(8)
+    @authors = Author.all.sort_by(&:readers).reverse!.first(8)
     @languages = Language.all
     @genres = Genre.all
 
@@ -14,19 +14,16 @@ class BooksController < ApplicationController
       @books = Book.genres(@genres)
     end
 
-    if params[:author]
-      @filter_author = Author.where('last_name = ? OR first_name = ?', params[:author], params[:author])
-      author_ids = @filter_author.map(&:id)
-      @books = Book.where('author_id IN (?)', author_ids)
-    end
-
     if params[:title]
-      @books = Book.title_like("%#{params[:title]}%").order('title')
+      @books = @books.where('title like ?', (params[:title]+'%'))
     end
 
-
+    if params[:author]
+      @filter_author = Author.where('last_name like ? or first_name like ?',
+                                    params[:author] + '%', params[:author] + '%')
+      @books = @books.where(author_id: @filter_author.map(&:id))
+    end
   end
-
 
   def show
     @book = Book.find(params[:id])
@@ -36,7 +33,8 @@ class BooksController < ApplicationController
     return unless mycopy
     @user_have_book = true
     @mybook = mycopy.book_copy.isbn
-    @days = (Date.today - BookCopyUser.where(book_copy_id: mycopy.book_copy.id).last.last_date).to_i
+    bcu = BookCopyUser.where(book_copy_id: mycopy.book_copy.id).last
+    @days = (Date.today - bcu.last_date).to_i
   end
 
   def new
@@ -84,24 +82,12 @@ class BooksController < ApplicationController
   end
 
   def create_copy
-    @copy = BookCopy.new
-    @copy.isbn = generate_isbn
-    @copy.user_id = current_user.id
-    @copy.available = true
-    @copy.book_id = params[:book_id]
-    if BookCopy.where(isbn: @copy.isbn).first
-      book_create_copy_path(params[:book_id])
-    else
-      @copy.save!
-      redirect_to user_path(current_user)
-    end
-  end
-
-  def generate_isbn
-    @a = (0...3).map { (65 + rand(26)).chr }.join
-    @b = rand(10**3).to_s.rjust(3)
-    @c = (0...3).map { (65 + rand(26)).chr }.join
-    @isbn = [@a, @b, @c].join('-')
+    copy = BookCopy.new
+    copy.user_id = current_user.id
+    copy.available = true
+    copy.book_id = params[:book_id]
+    copy.save!
+    redirect_to user_path(current_user)
   end
 
   def add_remove_genre
@@ -122,11 +108,15 @@ class BooksController < ApplicationController
     @book_copy = BookCopy.where(book_id: @book.id, available: true).first
     @user = current_user
 
-    @book_copy.available = false
-    @book_copy.save!
+    change_available @book_copy
 
-    @user.book_copy_users.create(book_copy_id: @book_copy.id,
+    @bookcopyuser = @user.book_copy_users.create(book_copy_id: @book_copy.id,
                                  last_date: Date.today + 7)
+
+    UserMailer.delay(run_at: 7.days.from_now).reminder_email(@user, @book)
+    @bookcopyuser.job_id = Delayed::Job.last.id
+    @bookcopyuser.save!
+
     respond_to do |format|
       format.js { render inline: 'location.reload();' }
     end
@@ -137,15 +127,24 @@ class BooksController < ApplicationController
     @user = current_user
     @book_copy_user = current_user.have_book?(@book)
 
-    @book_copy_user.book_copy.available = true
-    @book_copy_user.book_copy.save!
+    change_available @book_copy_user.book_copy
 
     @book_copy_user.return_date = Time.now
     @book_copy_user.save!
 
+    if @book_copy_user.return_date < @book_copy_user.last_date
+      job = Delayed::Job.find(@book_copy_user.job_id)
+      job.delete
+    end
+
     respond_to do |format|
       format.js { render inline: 'location.reload();' }
     end
+  end
+
+  def change_available(book_copy)
+    book_copy.available = !book_copy.available
+    book_copy.save!
   end
 
   private
