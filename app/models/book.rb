@@ -37,8 +37,6 @@ class Book < ActiveRecord::Base
 
   scope :title_like, -> (title) { where('title like ?', title) }
 
-  # scope :readers, -> {BookCopyUser.where('book_copy_id IN (?)', BookCopy.where(book_id: :id).map(&:id)).count }
-
   def readers
     bookcopies = BookCopy.where(book_id: id).map(&:id)
     return BookCopyUser.where(book_copy_id: bookcopies).count
@@ -49,10 +47,9 @@ class Book < ActiveRecord::Base
   def load_into_soulmate
     loader = Soulmate::Loader.new('books')
     author =  Author.find(author_id).first_name + ' ' + Author.find(author_id).first_name
-    loader.add('term' => title, 'id' => self.id, 'data' => {
+    loader.add('term' => title, 'id' => id, 'data' => {
                                       'link' => Rails.application.routes.url_helpers.book_path(self),
-                                      'author' => author
-                                  })
+                                      'author' => author })
   end
 
   def remove_from_soulmate

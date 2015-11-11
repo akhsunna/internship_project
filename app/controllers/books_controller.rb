@@ -4,7 +4,7 @@ class BooksController < ApplicationController
 
   def index
     @books = Book.all.order('updated_at DESC')
-    @authors = Author.all.reverse_each(&:readers).first(8)
+    @authors = Author.all.sort_by(&:readers).reverse!.first(8)
     @languages = Language.all
     @genres = Genre.all
 
@@ -24,7 +24,6 @@ class BooksController < ApplicationController
       @books = Book.title_like("%#{params[:title]}%").order('title')
     end
   end
-
 
   def show
     @book = Book.find(params[:id])
@@ -90,7 +89,6 @@ class BooksController < ApplicationController
     redirect_to user_path(current_user)
   end
 
-
   def add_remove_genre
     @book = Book.find(params[:book_id])
     @genre = Genre.find(params[:genre_id])
@@ -115,9 +113,6 @@ class BooksController < ApplicationController
     @bookcopyuser = @user.book_copy_users.create(book_copy_id: @book_copy.id,
                                  last_date: Date.today + 7)
 
-    # ReminderEmailJob.set(wait: 7.seconds).perform_now(@user, @book)
-
-    #UserMailer.delay(run_at: 20.seconds.from_now).reminder_email(@user, @book)
     UserMailer.delay(run_at: 7.days.from_now).reminder_email(@user, @book)
     @bookcopyuser.job_id = Delayed::Job.last.id
     @bookcopyuser.save!

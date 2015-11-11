@@ -11,8 +11,4 @@ class BookCopiesController < ApplicationController
     @book = @book_copy.book
     @book_copy.destroy
   end
-
-  # handle_asynchronously :reminder_email, run_at: Proc.new { when_to_run }
-
-
 end

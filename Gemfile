@@ -29,6 +29,7 @@ gem 'devise'
 
 # Omniauth
 gem 'omniauth-facebook', '~> 3.0.0'
+gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-google-oauth2'
 
 # Bootstrap and sass

@@ -15,7 +15,7 @@ class Author < ActiveRecord::Base
 
   def load_into_soulmate
     loader = Soulmate::Loader.new('authors')
-    loader.add('term' => last_name, 'id' => self.id, 'data' => {
+    loader.add('term' => last_name, 'id' => id, 'data' => {
                                  'link' => Rails.application.routes.url_helpers.author_path(self),
                                  'first_name' => first_name
                              })
@@ -23,6 +23,6 @@ class Author < ActiveRecord::Base
 
   def remove_from_soulmate
     loader = Soulmate::Loader.new('authors')
-    loader.remove('id' => self.id)
+    loader.remove('id' => id)
   end
 end
