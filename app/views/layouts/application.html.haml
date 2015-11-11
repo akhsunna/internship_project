@@ -10,12 +10,7 @@
     %nav.navbar.navbar-default
       .container
         .navbar-header
-          -#%button.navbar-toggle.collapsed{'data-target' => '.navbar-collapse', 'data-toggle' => 'collapse', type: 'button'}
-          -#  %span.sr-only Toggle navigation
-          -#  %span.icon-bar
-          -#  %span.icon-bar
-          -#  %span.icon-bar
-          -#%img{ src: '/assets/filename.png', style: 'height:50px' }
+          %img{ src: 'assets/library-icon.png', style: 'height:50px;margin-left:20px;' }
         .navbar-collapse.collapse
           %ul.nav.navbar-nav
             - if current_user.is_debtor?
@@ -31,8 +26,8 @@
             %li
               .navbar-form
                 = form_tag do
-                  .input-group
-                    = text_field_tag 'search', nil, placeholder: 'Search', autocomplete: :off, class: 'form-control'
+                  .input-group{style: 'width:400px;'}
+                    = text_field_tag 'search', nil, placeholder: 'Search book or author', autocomplete: :off, class: 'form-control'
           %ul.nav.navbar-nav.navbar-right
             %li.dropdown
               %a.dropdown-toggle{'aria-expanded' => 'false', 'data-toggle' => 'dropdown', href: '', role: 'button'}
