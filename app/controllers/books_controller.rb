@@ -14,14 +14,13 @@ class BooksController < ApplicationController
       @books = Book.genres(@genres)
     end
 
-    if params[:author]
-      @filter_author = Author.where('last_name = ? OR first_name = ?', params[:author], params[:author])
-      author_ids = @filter_author.map(&:id)
-      @books = Book.where('author_id IN (?)', author_ids)
+    if params[:title]
+      @books = @books.where('title like ?', (params[:title]+'%'))
     end
 
-    if params[:title]
-      @books = Book.title_like("%#{params[:title]}%").order('title')
+    if params[:author]
+      @filter_author = Author.where('last_name like ? or first_name like ?', params[:author]+'%', params[:author]+'%')
+      @books = @books.where(author_id: @filter_author.map(&:id))
     end
   end
 

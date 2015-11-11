@@ -35,8 +35,6 @@ class Book < ActiveRecord::Base
     return a
   end
 
-  scope :title_like, -> (title) { where('title like ?', title) }
-
   def readers
     bookcopies = BookCopy.where(book_id: id).map(&:id)
     return BookCopyUser.where(book_copy_id: bookcopies).count
