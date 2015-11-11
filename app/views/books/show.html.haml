@@ -51,11 +51,11 @@
                         %br
       - else
         - if !@user_have_book
-          = link_to book_take_path(@book.id), method: :put, remote: true do
+          = link_to book_copy_take_path(@book.id), method: :put, remote: true do
             .btn.btn-primary
               ='Take it'
         - else
-          = link_to book_return_path(@book.id), method: :put, remote: true do
+          = link_to book_copy_return_path(@book.id), method: :put, remote: true do
             .btn.btn-danger
               = 'Return ' + @mybook
           - if @days > 0
@@ -63,9 +63,7 @@
           - else
             %div{style: 'color:green;'}= 'You have ' + (@days * (-1)).to_s + 'days'
 
-
     .col-md-4
-
       .row
         %center
           %h2 Comments
@@ -75,8 +73,6 @@
 
       .row
         %br
-
-
         - if @book.comments.empty?
           %center No comments.
         - else
