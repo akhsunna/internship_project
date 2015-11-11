@@ -6,23 +6,14 @@ class BooksController < ApplicationController
     @books = Book.all.order('updated_at DESC')
     @authors = Author.all.sort_by(&:readers).reverse!.first(8)
     @languages = Language.all
-    @genres = Genre.all
+    @genres = Genre.where(id: params[:genre_ids])
 
-    genre_ids = params[:genre_ids].collect(&:to_i) if params[:genre_ids]
-    if genre_ids
-      @genres = Genre.find(genre_ids)
-      @books = Book.genres(@genres)
-    end
+    @genre_ids = params[:genre_ids].collect(&:to_i) if params[:genre_ids]
+    @books = Book.genres(Genre.find(@genre_ids)) if @genre_ids
 
-    if params[:title]
-      @books = @books.where('title like ?', (params[:title]+'%'))
-    end
+    @books = @books.title_like params[:title] if params[:title]
 
-    if params[:author]
-      @filter_author = Author.where('last_name like ? or first_name like ?',
-                                    params[:author] + '%', params[:author] + '%')
-      @books = @books.where(author_id: @filter_author.map(&:id))
-    end
+    @books = @books.by_author params[:author] if params[:author]
   end
 
   def show
@@ -101,50 +92,6 @@ class BooksController < ApplicationController
     else
       @new_book_genre = @book.book_genres.create(genre_id: @genre.id)
     end
-  end
-
-  def take
-    @book = Book.find(params[:book_id])
-    @book_copy = BookCopy.where(book_id: @book.id, available: true).first
-    @user = current_user
-
-    change_available @book_copy
-
-    @bookcopyuser = @user.book_copy_users.create(book_copy_id: @book_copy.id,
-                                 last_date: Date.today + 7)
-
-    UserMailer.delay(run_at: 7.days.from_now).reminder_email(@user, @book)
-    @bookcopyuser.job_id = Delayed::Job.last.id
-    @bookcopyuser.save!
-
-    respond_to do |format|
-      format.js { render inline: 'location.reload();' }
-    end
-  end
-
-  def return
-    @book = Book.find(params[:book_id])
-    @user = current_user
-    @book_copy_user = current_user.have_book?(@book)
-
-    change_available @book_copy_user.book_copy
-
-    @book_copy_user.return_date = Time.now
-    @book_copy_user.save!
-
-    if @book_copy_user.return_date < @book_copy_user.last_date
-      job = Delayed::Job.find(@book_copy_user.job_id)
-      job.delete
-    end
-
-    respond_to do |format|
-      format.js { render inline: 'location.reload();' }
-    end
-  end
-
-  def change_available(book_copy)
-    book_copy.available = !book_copy.available
-    book_copy.save!
   end
 
   private

@@ -9,8 +9,10 @@ class UsersController < ApplicationController
   end
 
   def index
-    @book_copies = BookCopy.where(available: false,
-                                  user_id: current_user.id).reject { |bc| BookCopyUser.where(book_copy_id: bc.id).last.last_date > Time.now }
+    @book_copies = BookCopy.where(available: false, user_id: current_user.id)
+    @book_copies = @book_copies.reject do |bc|
+      BookCopyUser.where(book_copy_id: bc.id).last.last_date > Time.now
+    end
   end
 
   def finish_signup
@@ -28,7 +30,9 @@ class UsersController < ApplicationController
 
   def user_params
     accessible = [:name, :email]
-    accessible << [:password, :password_confirmation] unless params[:user][:password].blank?
+    unless params[:user][:password].blank?
+      accessible << [:password, :password_confirmation]
+    end
     params.require(:user).permit(accessible)
   end
 end

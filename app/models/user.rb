@@ -34,12 +34,12 @@ class User < ActiveRecord::Base
     role == ROLE_USER
   end
 
-  def is_debtor?
+  def debtor?
     bc = BookCopyUser.where(user_id: id, return_date: nil)
     bc.each do |b|
       return true if must_return_book? b.book_copy.book
     end
-    return false
+    false
   end
 
   def have_book?(book)
@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
         return myc if myc
       end
     end
-    return nil
+    nil
   end
 
   def must_return_book?(book)

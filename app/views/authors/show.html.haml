@@ -11,8 +11,6 @@
           %h2= book.title
           %p= book.language.name
 
-
-
   .col-sm-3
   .col-sm-6
     .row
@@ -24,9 +22,7 @@
       = render 'comments/form'
 
     .row
-
       %br
-
       - if @author.comments.empty?
         %center No comments.
       - else
